@@ -5,11 +5,14 @@ const WaveContainer = styled.div`
   width: 100%;
   height: 190px;
   overflow: hidden;
+  z-index: 0;
 `;
 const Svg = styled.svg`
   position: absolute;
   top: 0;
   left: 0;
+  display: block;
+  max-width: 100%;
 `;
 const Path = styled.path``;
 
@@ -18,7 +21,7 @@ export default function WaveHeader() {
     <WaveContainer>
       <Svg
         width='100%'
-        height='190'
+        height='100%'
         viewBox='0 0 375 100'
         preserveAspectRatio='none'>
         <Path
