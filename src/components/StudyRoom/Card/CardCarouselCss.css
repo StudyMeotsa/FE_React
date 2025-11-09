@@ -1,7 +1,7 @@
 .carousel-container {
   width: 100%;
-  overflow: hidden;
-  position: relative;
+  /* overflow: hidden; */
+  /* position: relative; */
   padding: 16px 0;
 }
 
@@ -12,23 +12,24 @@
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  padding: 0 16px;
+  padding: 0 32px; /* 좌우 여유 공간 추가 */
 
   /* 스크롤바 숨기기 */
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
 }
 .carousel-wrapper::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
+  display: none;
 }
 
 .carousel-item {
-  flex: 0 0 100%;
+  flex: 0 0 80%; /* 카드 너비를 부모보다 작게 */
   scroll-snap-align: center;
+  box-sizing: border-box;
+  margin-bottom: 10px;
 }
 
 .carousel-indicators {
   position: absolute;
-  bottom: 8px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;

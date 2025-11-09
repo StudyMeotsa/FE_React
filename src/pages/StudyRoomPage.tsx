@@ -4,7 +4,9 @@ export default function StudyRoomPage() {
   return (
     <div>
       <WaveHeader />
-      <CardCarousel />
+      <div style={{ marginTop: '-20px' }}>
+        <CardCarousel />
+      </div>
     </div>
   );
 }

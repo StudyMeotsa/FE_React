@@ -5,12 +5,12 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 340px;
-  height: 481px;
+  width: 320px;
+  height: 467px;
   margin: 0 10px;
   background-color: #dfbd9a;
   border-radius: 16px;
-  box-shadow: 0 10px 20px 0 #1c103e;
+  box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.4);
 `;
 
 // 카드 Top(스터디 과목 + 플랜)
@@ -18,7 +18,7 @@ export const Top = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 5px;
+  margin-top: 6px;
   gap: 25px;
 `;
 
@@ -48,7 +48,7 @@ export const Content = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   margin: 35px 0 0 50px;
-  gap: 8px;
+  gap: 7px;
 `;
 
 export const ContentText = styled.p`
@@ -61,8 +61,8 @@ export const ContentText = styled.p`
 export const Image = styled.img`
   width: 165px;
   height: 175px;
-  margin-top: 5px;
-  margin-left: 150px;
+  margin-top: 3px;
+  margin-left: 140px;
 `;
 
 // 카드 진도율
