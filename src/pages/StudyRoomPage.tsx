@@ -1,5 +1,5 @@
-import React from 'react';
+import WaveHeader from '@/components/WaveHeader';
 
 export default function StudyRoomPage() {
-  return <div>스터디룸 페이지</div>;
+  return <WaveHeader></WaveHeader>;
 }
