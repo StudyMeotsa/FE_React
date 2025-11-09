@@ -1,0 +1,49 @@
+.carousel-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 16px 0;
+}
+
+.carousel-wrapper {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 16px;
+
+  /* 스크롤바 숨기기 */
+  scrollbar-width: none; /* Firefox */
+}
+.carousel-wrapper::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.carousel-item {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+}
+
+.carousel-indicators {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid #999;
+  background: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+}
+.indicator.active {
+  background: #111;
+  border-color: #111;
+}

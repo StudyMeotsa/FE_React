@@ -1,11 +1,10 @@
 import WaveHeader from '@/components/WaveHeader';
-import Card from '@/components/StudyRoom/Card/Card';
-
+import CardCarousel from '@/components/StudyRoom/Card/CardCarousel';
 export default function StudyRoomPage() {
   return (
     <div>
       <WaveHeader />
-      <Card />
+      <CardCarousel />
     </div>
   );
 }
