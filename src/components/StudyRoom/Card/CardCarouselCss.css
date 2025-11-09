@@ -1,18 +1,32 @@
-.carousel-container {
-  width: 100%;
-  /* overflow: hidden; */
-  /* position: relative; */
-  padding: 16px 0;
+:root {
+  /* 카드 너비 비율(원하면 px로 바꿔도 됨) */
+  --item-width: 80%; /* 화면에 보이는 카드 비율(좌우 조금 보이게) */
+  --gap: 16px;
 }
 
+/* 컨테이너는 overflow visible으로 그림자 보이게 유지 */
+.carousel-container {
+  width: 100%;
+  overflow: visible; /* 그림자 안 잘리도록 */
+  padding: 16px 0;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* wrapper: 좌우 패딩을 카드 폭의 중앙 정렬에 맞춰 자동 계산 */
 .carousel-wrapper {
   display: flex;
-  gap: 16px;
+  gap: var(--gap);
   overflow-x: auto;
+  overflow-y: visible;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  padding: 0 32px; /* 좌우 여유 공간 추가 */
+
+  /* 좌우 여백을 카드 폭에 맞춰 계산 => 좌/우 보이는 비율 균일 */
+  padding-inline: calc((100% - var(--item-width)) / 2);
+  /* 스냅 동작 시 스크롤 패딩도 동일하게 적용 (정렬 안정화) */
+  scroll-padding-inline: calc((100% - var(--item-width)) / 2);
 
   /* 스크롤바 숨기기 */
   scrollbar-width: none;
@@ -22,29 +36,9 @@
 }
 
 .carousel-item {
-  flex: 0 0 80%; /* 카드 너비를 부모보다 작게 */
+  flex: 0 0 var(--item-width);
+  width: var(--item-width);
   scroll-snap-align: center;
   box-sizing: border-box;
-  margin-bottom: 10px;
-}
-
-.carousel-indicators {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 8px;
-}
-
-.indicator {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  border: 1px solid #999;
-  background: rgba(255, 255, 255, 0.7);
-  cursor: pointer;
-}
-.indicator.active {
-  background: #111;
-  border-color: #111;
+  margin-bottom: 10px; /* 그림자 공간 확보 */
 }

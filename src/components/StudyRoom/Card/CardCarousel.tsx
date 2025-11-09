@@ -25,7 +25,11 @@ export default function CardCarousel({ interval = 3000 }) {
     if (!el) return;
 
     const onScroll = () => {
-      const i = Math.round(el.scrollLeft / el.clientWidth);
+      const child = el.children[0] as HTMLElement;
+      if (!child) return;
+
+      const cardWidth = child.clientWidth + 16; // gap 16px 고려
+      const i = Math.round(el.scrollLeft / cardWidth);
       if (i !== index) setIndex(i);
     };
 
@@ -64,19 +68,6 @@ export default function CardCarousel({ interval = 3000 }) {
           </div>
         ))}
       </div>
-
-      {/* 점 인디케이터 */}
-      {count > 1 && (
-        <div className='carousel-indicators'>
-          {cards.map((_, i) => (
-            <button
-              key={i}
-              className={`indicator ${i === index ? 'active' : ''}`}
-              onClick={() => scrollTo(i)}
-            />
-          ))}
-        </div>
-      )}
     </div>
   );
 }
