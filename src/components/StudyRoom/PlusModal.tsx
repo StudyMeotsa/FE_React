@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router';
 import * as S from './PlusModalStyled';
 import Plus from '@/assets/Plus.png';
 
@@ -18,7 +19,9 @@ export default function PlusModal() {
       />
 
       <S.ModalWrapper $open={open}>
-        <S.Modal>생성하기</S.Modal>
+        <Link to='/studyroomCreate'>
+          <S.Modal>생성하기</S.Modal>
+        </Link>
         <S.Modal
           $color='#DBCEC4'
           $textColor='black'>
