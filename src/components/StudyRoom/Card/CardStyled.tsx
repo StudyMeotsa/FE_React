@@ -47,7 +47,7 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  margin: 35px 0 0 50px;
+  margin: 35px 0 0 45px;
   gap: 7px;
 `;
 
