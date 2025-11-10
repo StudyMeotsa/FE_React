@@ -19,18 +19,18 @@ export const Overlay = styled.div<{ $open: boolean }>`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 999;
 `;
 
 export const ModalWrapper = styled.div<{ $open: boolean }>`
   display: ${({ $open }) => ($open ? 'flex' : 'none')};
-  position: fixed;
+  position: absolute;
   top: 13%;
   left: 63%;
   flex-direction: column;
   gap: 0.9rem;
-  z-index: 999;
+  z-index: 1000;
 `;
 
 export const Modal = styled.div<ModalProps>`

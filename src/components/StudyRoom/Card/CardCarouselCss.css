@@ -6,29 +6,32 @@
 
 /* 컨테이너는 overflow visible으로 그림자 보이게 유지 */
 .carousel-container {
-  width: 100%;
-  overflow: visible; /* 그림자 안 잘리도록 */
-  padding: 16px 0;
   position: relative;
+
+  width: 100%;
+  overflow: visible;
+  padding: 16px 0;
   box-sizing: border-box;
+  z-index: -1;
 }
 
 /* wrapper: 좌우 패딩을 카드 폭의 중앙 정렬에 맞춰 자동 계산 */
 .carousel-wrapper {
   display: flex;
+  position: relative;
   gap: var(--gap);
   overflow-x: auto;
   overflow-y: visible;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  z-index: 0;
 
   /* 좌우 여백을 카드 폭에 맞춰 계산 => 좌/우 보이는 비율 균일 */
   padding-inline: calc((100% - var(--item-width)) / 2);
   /* 스냅 동작 시 스크롤 패딩도 동일하게 적용 (정렬 안정화) */
   scroll-padding-inline: calc((100% - var(--item-width)) / 2);
 
-  /* 스크롤바 숨기기 */
   scrollbar-width: none;
 }
 .carousel-wrapper::-webkit-scrollbar {
@@ -36,9 +39,11 @@
 }
 
 .carousel-item {
+  position: relative;
   flex: 0 0 var(--item-width);
   width: var(--item-width);
   scroll-snap-align: center;
   box-sizing: border-box;
-  margin-bottom: 10px; /* 그림자 공간 확보 */
+  margin-bottom: 10px;
+  z-index: 0;
 }

@@ -1,4 +1,6 @@
+// PlusModal.jsx
 import { useState } from 'react';
+import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
 import * as S from './PlusModalStyled';
 import Plus from '@/assets/Plus.png';
@@ -6,18 +8,12 @@ import Plus from '@/assets/Plus.png';
 export default function PlusModal() {
   const [open, setOpen] = useState(false);
 
-  return (
+  const modal = (
     <>
-      <S.PlusButton
-        src={Plus}
-        alt='button'
-        onClick={() => setOpen(true)}></S.PlusButton>
-
       <S.Overlay
         $open={open}
         onClick={() => setOpen(false)}
       />
-
       <S.ModalWrapper $open={open}>
         <Link to='/studyroomCreate'>
           <S.Modal>생성하기</S.Modal>
@@ -30,6 +26,17 @@ export default function PlusModal() {
           </S.Modal>
         </Link>
       </S.ModalWrapper>
+    </>
+  );
+
+  return (
+    <>
+      <S.PlusButton
+        src={Plus}
+        alt='button'
+        onClick={() => setOpen(true)}
+      />
+      {open && ReactDOM.createPortal(modal, document.body)}
     </>
   );
 }
