@@ -69,14 +69,34 @@
   padding: 10px;
 }
 
+.todaytitle {
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.todayclock {
+  font-size: 25px;
+  color: #bf7141;
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
 .weekstudy {
   width: 155px;
-  height: 150px;
+  height: 234px;
   border: solid;
   border-radius: 20px;
   border-color: #d0d0d0;
-  padding: 10px;
   margin-top: 20px;
+  padding: 10px;
+}
+
+.weekstudytitle {
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
 }
 
 .rightInfo {
@@ -85,19 +105,39 @@
 
 .studygoal {
   width: 155px;
-  height: 150px;
+  height: 180px;
   border: solid;
   border-radius: 20px;
   border-color: #d0d0d0;
   padding: 10px;
 }
 
+.studygoaltitle {
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+}
+
 .averagestudy {
   width: 155px;
-  height: 120px;
+  height: 180px;
   border: solid;
   border-radius: 20px;
   border-color: #d0d0d0;
   padding: 10px;
+  margin-top: 20px;
+}
+
+.averagetitle {
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.averageclock {
+  font-size: 25px;
+  color: #a57865;
+  display: flex;
+  justify-content: center;
   margin-top: 20px;
 }

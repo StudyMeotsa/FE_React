@@ -1,10 +1,11 @@
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import './HomePage.css';
 import Man from '../assets/man.png';
 import Lamp from '../assets/lamp.png';
 
-function HomePage() {
+export default function HomePage() {
   const Box = styled.div`
     border-radius: 12px;
     padding: 16px;
@@ -44,28 +45,23 @@ function HomePage() {
       <div className='HomeInfo'>
         <div className='leftInfo'>
           <div className='todaystudy'>
-            <p>오늘 공부량</p>
-            <p>12:00</p>
+            <p className='todaytitle'>오늘 공부량</p>
+            <p className='todayclock'>12:00</p>
           </div>
           <div className='weekstudy'>
-            <p>주간공부량</p>
-            <div className=''>
-              <p>9월 4주</p>
-              <img />
-            </div>
+            <p className='weekstudytitle'>주간 공부량</p>
           </div>
         </div>
         <div className='rightInfo'>
           <div className='studygoal'>
-            <p>과제달성률</p>
+            <p className='studygoaltitle'>과제 달성률</p>
           </div>
           <div className='averagestudy'>
-            <p>하루평균공부</p>
+            <p className='averagetitle'>하루 평균 공부</p>
+            <p className='averageclock'>03:00</p>
           </div>
         </div>
       </div>
     </>
   );
 }
-
-export default HomePage;
