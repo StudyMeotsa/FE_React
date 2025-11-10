@@ -7,8 +7,8 @@ interface ModalProps {
 
 export const PlusButton = styled.img`
   position: absolute;
-  top: 7.5%;
-  left: 75%;
+  top: 3.5rem;
+  left: 85%;
   z-index: 10;
 `;
 
