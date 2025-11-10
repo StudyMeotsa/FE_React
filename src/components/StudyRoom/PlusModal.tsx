@@ -22,11 +22,13 @@ export default function PlusModal() {
         <Link to='/studyroomCreate'>
           <S.Modal>생성하기</S.Modal>
         </Link>
-        <S.Modal
-          $color='#DBCEC4'
-          $textColor='black'>
-          입장하기
-        </S.Modal>
+        <Link to='/enter'>
+          <S.Modal
+            $color='#DBCEC4'
+            $textColor='black'>
+            입장하기
+          </S.Modal>
+        </Link>
       </S.ModalWrapper>
     </>
   );

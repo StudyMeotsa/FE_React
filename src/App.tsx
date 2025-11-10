@@ -6,6 +6,7 @@ import CollectionPage from './pages/CollectionPage';
 import StudyRoomPage from './pages/StudyRoomPage';
 import MyPage from './pages/MyPage';
 import StudyRoomCreate from './pages/StudyRoomCreate';
+import EnterPage from './pages/EnterPage';
 
 function App() {
   const router = createBrowserRouter([
@@ -17,6 +18,7 @@ function App() {
         { path: '/studyroom', element: <StudyRoomPage /> },
         { path: '/my', element: <MyPage /> },
         { path: '/studyroomCreate', element: <StudyRoomCreate /> },
+        { path: '/enter', element: <EnterPage /> },
       ],
     },
   ]);
