@@ -1,0 +1,128 @@
+.info {
+  cursor: pointer;
+  position: absolute;
+  top: 2.5rem;
+  left: 85%;
+  z-index: 10;
+}
+
+.infoback {
+  cursor: pointer;
+  position: absolute;
+  top: 2.8rem;
+  right: 85%;
+  top: 20%;
+  z-index: 10;
+}
+
+.buttoncontainers {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.stamp {
+  width: 120px;
+  height: 40px;
+  border-radius: 30px;
+  color: white;
+  background-color: #3f5f76;
+  cursor: pointer;
+}
+.stamp:hover {
+  filter: brightness(0.7);
+}
+.stamp:active {
+  transform: scale(0.95);
+}
+
+.todo {
+  width: 120px;
+  height: 40px;
+  border-radius: 30px;
+  background-color: #dbcec4;
+  cursor: pointer;
+}
+.todo:hover {
+  filter: brightness(0.7);
+}
+.todo:active {
+  transform: scale(0.95);
+}
+
+.study {
+  width: 120px;
+  height: 40px;
+  border-radius: 30px;
+  color: white;
+  background-color: #976a50;
+  cursor: pointer;
+}
+.study:hover {
+  filter: brightness(0.7);
+}
+.study:hover {
+  transform: scale(0.95);
+}
+
+.noticecontainers {
+  width: 370px;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  position: relative;
+}
+
+.noticecontainer {
+  width: 370px;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  background-color: #e5e5e5;
+  transition: background-color 0.2s;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.noticecontainer.active {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.noticecontent {
+  display: flex;
+  justify-content: space-between;
+  height: auto;
+  background-color: #e5e5e5;
+  padding: 15px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  animation: slideDown 0.3s ease-out;
+  position: absolute;
+  top: 100%;
+  z-index: 10;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tablecontainers {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  height: auto;
+  text-align: center;
+}
+
+.sample {
+  margin: auto;
+}
