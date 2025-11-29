@@ -45,6 +45,9 @@ export default function StudyRoomDetail() {
   const backButtonClick = () => {
     navigate('/studyroom');
   };
+  const todoButtonClick = () => {
+    navigate('/todo');
+  };
 
   return (
     <div>
@@ -73,7 +76,11 @@ export default function StudyRoomDetail() {
 
       <div className='buttoncontainers'>
         <button className='stamp'>스탬프</button>
-        <button className='todo'>세션 할 일</button>
+        <button
+          onClick={todoButtonClick}
+          className='todo'>
+          세션 할 일
+        </button>
         <button className='study'>공부하기</button>
       </div>
 

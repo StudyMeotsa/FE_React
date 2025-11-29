@@ -9,7 +9,7 @@ import StudyRoomCreate from './pages/StudyRoomCreate';
 import EnterPage from './pages/EnterPage';
 import StudyRoomDetail from './pages/StudyRoomDetail';
 import StudyRoomInfo from './pages/StudyRoomInfo';
-
+import TodoPage from './pages/TodoPage';
 function App() {
   const router = createBrowserRouter([
     {
@@ -23,6 +23,7 @@ function App() {
         { path: '/studyroomdetail', element: <StudyRoomDetail /> },
         { path: '/studyroominfo', element: <StudyRoomInfo /> },
         { path: '/enter', element: <EnterPage /> },
+        { path: '/todo', element: <TodoPage /> },
       ],
     },
   ]);
