@@ -7,6 +7,8 @@ import StudyRoomPage from './pages/StudyRoomPage';
 import MyPage from './pages/MyPage';
 import StudyRoomCreate from './pages/StudyRoomCreate';
 import EnterPage from './pages/EnterPage';
+import StudyRoomDetail from './pages/StudyRoomDetail';
+import StudyRoomInfo from './pages/StudyRoomInfo';
 
 function App() {
   const router = createBrowserRouter([
@@ -18,6 +20,8 @@ function App() {
         { path: '/studyroom', element: <StudyRoomPage /> },
         { path: '/my', element: <MyPage /> },
         { path: '/studyroomCreate', element: <StudyRoomCreate /> },
+        { path: '/studyroomdetail', element: <StudyRoomDetail /> },
+        { path: '/studyroominfo', element: <StudyRoomInfo /> },
         { path: '/enter', element: <EnterPage /> },
       ],
     },
