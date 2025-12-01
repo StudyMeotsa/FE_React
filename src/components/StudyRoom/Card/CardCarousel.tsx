@@ -9,7 +9,10 @@ export default function CardCarousel({ interval = 3000 }) {
   const cards = Array.from({ length: 5 }, (_, i) => <Card key={i} />);
   const count = cards.length;
 
-  const clamp = (i: number) => (i + count) % count;
+  const clamp = useCallback(
+    (i: number) => (i + count) % count,
+    [count] // count가 바뀔 때만 함수를 새로 만듦
+  );
 
   const scrollTo = useCallback((i: number, behavior: ScrollBehavior = 'smooth') => {
     const el = trackRef.current;
@@ -47,7 +50,7 @@ export default function CardCarousel({ interval = 3000 }) {
     }, interval);
 
     return () => clearInterval(id);
-  }, [paused, index, count, interval, scrollTo]);
+  }, [paused, index, count, interval, scrollTo, clamp]);
 
   return (
     <div
