@@ -12,7 +12,6 @@
   overflow: visible;
   padding: 16px 0;
   box-sizing: border-box;
-  z-index: -1;
 }
 
 /* wrapper: 좌우 패딩을 카드 폭의 중앙 정렬에 맞춰 자동 계산 */
