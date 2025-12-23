@@ -10,6 +10,8 @@ import EnterPage from './pages/EnterPage';
 import StudyRoomDetail from './pages/StudyRoomDetail';
 import StudyRoomInfo from './pages/StudyRoomInfo';
 import TodoPage from './pages/TodoPage';
+import TimerScreen from '@/pages/TimerScreen';
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -24,6 +26,7 @@ function App() {
         { path: '/studyroominfo', element: <StudyRoomInfo /> },
         { path: '/enter', element: <EnterPage /> },
         { path: '/todo', element: <TodoPage /> },
+        { path: '/timer', element: <TimerScreen /> },
       ],
     },
   ]);

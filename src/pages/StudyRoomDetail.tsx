@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import WaveHeader from '@/components/WaveHeader';
 import styled from 'styled-components';
@@ -15,7 +15,12 @@ const TextContainer = styled.div`
   align-items: center;
 `;
 
-function NoticeItem({ noticetitle, noticecontent }: any) {
+interface NoticeItemProps {
+  noticetitle: string;
+  noticecontent: string;
+}
+
+function NoticeItem({ noticetitle, noticecontent }: NoticeItemProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleNotice = () => {

@@ -1,15 +1,14 @@
-import React from 'react';
 import { useNavigate } from 'react-router';
-import styled from 'styled-components';
+
 import './HomePage.css';
 import Man from '../assets/man.png';
 import Lamp from '../assets/lamp.png';
 
 export default function HomePage() {
-  const Box = styled.div`
-    border-radius: 12px;
-    padding: 16px;
-  `;
+  // const Box = styled.div`
+  //   border-radius: 12px;
+  //   padding: 16px;
+  // `;
 
   const navigate = useNavigate();
   const handleClick = () => {

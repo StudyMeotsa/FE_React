@@ -1,5 +1,13 @@
-import React from 'react';
+import collectipn from '@/assets/collection.png';
 
 export default function CollectionPage() {
-  return <div>컬렉션 페이지</div>;
+  return (
+    <div>
+      <img
+        src={collectipn}
+        alt=''
+        className='h-full w-full'
+      />
+    </div>
+  );
 }
