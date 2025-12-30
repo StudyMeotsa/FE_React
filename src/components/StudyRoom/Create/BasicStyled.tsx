@@ -7,6 +7,7 @@ export const Container = styled.div`
   justify-content: center;
   height: 100%;
   background-color: #f5f5f5;
+  position: relative; //여기 추가
 `;
 
 export const Title = styled.div`
