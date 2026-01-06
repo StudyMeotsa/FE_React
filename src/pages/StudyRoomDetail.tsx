@@ -1,18 +1,61 @@
+import WaveHeader from '@/components/WaveHeader';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import WaveHeader from '@/components/WaveHeader';
 import styled from 'styled-components';
-import './StudyRoomDetail.css';
-import info from '../assets/info.svg';
 import back from '../assets/back.svg';
+import info from '../assets/info.svg';
+import './StudyRoomDetail.css';
 // import detailman from '../assets/detailman.svg';
 import sample1 from '../assets/sample1.svg';
 import sample2 from '../assets/sample2.svg';
 import sample3 from '../assets/sample3.svg';
+import stamp from '../assets/stamp.svg';
 
 const TextContainer = styled.div`
   margin-top: -2.7rem;
   align-items: center;
+`;
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const SquareModalBox = styled.div`
+  width: 540px;
+  height: 300px;
+  background-color: #3f5f76;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+`;
+
+const CloseButton = styled.button`
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 20px;
+  margin-top: 0px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  font-weight: bold;
+
+  &:hover {
+    background-color: #555;
+  }
 `;
 
 interface NoticeItemProps {
@@ -50,8 +93,13 @@ export default function StudyRoomDetail() {
   const backButtonClick = () => {
     navigate('/studyroom');
   };
-  const todoButtonClick = () => {
-    navigate('/todo');
+
+  const [isStampModalOpen, setIsStampModalOpen] = useState(false);
+  const openStampModalOpen = () => {
+    setIsStampModalOpen(true);
+  };
+  const closeStampModal = () => {
+    setIsStampModalOpen(false);
   };
 
   return (
@@ -80,13 +128,21 @@ export default function StudyRoomDetail() {
       <div style={{ marginTop: '-20px' }}></div>
 
       <div className='buttoncontainers'>
-        <button className='stamp'>스탬프</button>
         <button
-          onClick={todoButtonClick}
-          className='todo'>
+          className='stamp'
+          onClick={openStampModalOpen}>
+          스탬프
+        </button>
+        <button
+          className='todo'
+          onClick={() => navigate('/todoSession')}>
           세션 할 일
         </button>
-        <button className='study'>공부하기</button>
+        <button
+          className='study'
+          onClick={() => navigate('/timer')}>
+          공부하기
+        </button>
       </div>
 
       <NoticeItem
@@ -100,7 +156,7 @@ export default function StudyRoomDetail() {
             src={detailman}
             alt={detailman}
           />
-          <div>안녕이1</div>
+          <div>안녕1</div>
         </div> */}
 
         <img
@@ -119,6 +175,32 @@ export default function StudyRoomDetail() {
           alt='sample3'
         />
       </div>
+
+      {isStampModalOpen && (
+        <ModalOverlay onClick={closeStampModal}>
+          {/* 박스 클릭 시에는 닫히지 않도록 stopPropagation 설정 */}
+          <SquareModalBox onClick={(e) => e.stopPropagation()}>
+            <h1
+              style={{
+                color: 'white',
+                fontSize: '25px',
+                margin: '20px 0 0 0',
+                textAlign: 'left',
+                width: '80%',
+              }}>
+              스터디 진행 현황
+            </h1>
+            <img
+              className='stamp'
+              src={stamp}
+              alt='stamp'
+              style={{ width: '380px', height: '210px' }}
+            />
+
+            <CloseButton onClick={closeStampModal}>확인</CloseButton>
+          </SquareModalBox>
+        </ModalOverlay>
+      )}
     </div>
   );
 }
