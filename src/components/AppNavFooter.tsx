@@ -9,7 +9,7 @@ export default function AppNavFooter() {
   ];
 
   return (
-    <div className='m-auto flex w-full max-w-lg justify-evenly gap-10 border border-black p-2'>
+    <div className='fixed bottom-0 left-16 flex w-full max-w-lg justify-evenly gap-10 border border-black bg-white p-2'>
       {navRoute.map((nav) => (
         <Link to={nav.path}>
           <div>{nav.label}</div>

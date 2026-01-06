@@ -1,15 +1,17 @@
+import SessionDetail from '@/pages/SessionDetail';
+import TimerScreen from '@/pages/TimerScreen';
+import TodoSession from '@/pages/TodoSession';
 import { createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router-dom';
 import DefaultLayout from './layouts/DefaultLayout';
-import HomePage from './pages/HomePage';
 import CollectionPage from './pages/CollectionPage';
-import StudyRoomPage from './pages/StudyRoomPage';
+import EnterPage from './pages/EnterPage';
+import HomePage from './pages/HomePage';
 import MyPage from './pages/MyPage';
 import StudyRoomCreate from './pages/StudyRoomCreate';
-import EnterPage from './pages/EnterPage';
 import StudyRoomDetail from './pages/StudyRoomDetail';
 import StudyRoomInfo from './pages/StudyRoomInfo';
-import TimerScreen from '@/pages/TimerScreen';
+import StudyRoomPage from './pages/StudyRoomPage';
 
 function App() {
   const router = createBrowserRouter([
@@ -25,6 +27,8 @@ function App() {
         { path: '/studyroominfo', element: <StudyRoomInfo /> },
         { path: '/enter', element: <EnterPage /> },
         { path: '/timer', element: <TimerScreen /> },
+        { path: '/todoSession', element: <TodoSession /> },
+        { path: '/session/:id', element: <SessionDetail /> },
       ],
     },
   ]);

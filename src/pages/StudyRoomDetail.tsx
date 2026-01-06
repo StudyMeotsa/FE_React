@@ -1,10 +1,10 @@
+import WaveHeader from '@/components/WaveHeader';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import WaveHeader from '@/components/WaveHeader';
 import styled from 'styled-components';
-import './StudyRoomDetail.css';
-import info from '../assets/info.svg';
 import back from '../assets/back.svg';
+import info from '../assets/info.svg';
+import './StudyRoomDetail.css';
 // import detailman from '../assets/detailman.svg';
 import sample1 from '../assets/sample1.svg';
 import sample2 from '../assets/sample2.svg';
@@ -133,7 +133,11 @@ export default function StudyRoomDetail() {
           onClick={openStampModalOpen}>
           스탬프
         </button>
-        <button className='todo'>세션 할 일</button>
+        <button
+          className='todo'
+          onClick={() => navigate('/todoSession')}>
+          세션 할 일
+        </button>
         <button
           className='study'
           onClick={() => navigate('/timer')}>

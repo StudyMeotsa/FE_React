@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react'; // lucide-react 아이콘 사용 (없으면 생략 가능)
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router';
 
 type TimerStatus = 'idle' | 'running' | 'paused';
 
 export default function TimerScreen() {
+  const navigate = useNavigate();
   const [time, setTime] = useState(0); // 총 경과 시간 (초)
   const [status, setStatus] = useState<TimerStatus>('idle');
 
@@ -49,7 +51,10 @@ export default function TimerScreen() {
     <div className='flex h-full flex-col items-center justify-between p-4'>
       <div className='w-full'>
         <div className='flex items-center justify-between text-[#191F28]'>
-          <ArrowLeft className='h-6 w-6 cursor-pointer' />
+          <ArrowLeft
+            className='h-6 w-6 cursor-pointer'
+            onClick={() => navigate(-1)}
+          />
           <h1 className='text-xl font-bold'>타이머</h1>
           <div className='w-6' /> {/* 레이아웃 밸런스용 빈 박스 */}
         </div>
