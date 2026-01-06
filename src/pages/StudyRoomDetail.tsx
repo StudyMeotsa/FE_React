@@ -134,7 +134,11 @@ export default function StudyRoomDetail() {
           스탬프
         </button>
         <button className='todo'>세션 할 일</button>
-        <button className='study'>공부하기</button>
+        <button
+          className='study'
+          onClick={() => navigate('/timer')}>
+          공부하기
+        </button>
       </div>
 
       <NoticeItem
