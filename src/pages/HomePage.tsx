@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router';
 
-import './HomePage.css';
-import Man from '../assets/man.png';
 import Lamp from '../assets/lamp.png';
+import Man from '../assets/man.png';
+import './HomePage.css';
 
 export default function HomePage() {
   // const Box = styled.div`
@@ -54,6 +54,7 @@ export default function HomePage() {
         <div className='rightInfo'>
           <div className='studygoal'>
             <p className='studygoaltitle'>과제 달성률</p>
+            <button>로그인하기</button>
           </div>
           <div className='averagestudy'>
             <p className='averagetitle'>하루 평균 공부</p>
