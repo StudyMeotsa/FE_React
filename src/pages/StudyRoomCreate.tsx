@@ -29,7 +29,7 @@ export default function StudyRoomCreate() {
       );
 
       alert('스터디룸이 생성되었습니다.');
-      navigate('/StudyRoomDetail');
+      navigate('/studyroom');
     } catch (e: any){
        if (e.status === 409){
         alert('이미 존재하는 스터디룸명입니다.');
@@ -53,7 +53,7 @@ export default function StudyRoomCreate() {
       />
       <Input
         title='스터디 시작 일자'
-        type='datetime-local'
+        type='date'
         value = {startDay}
         onChange = {(e: React.ChangeEvent<HTMLInputElement>) => setStartDay(e.target.value)}
       />

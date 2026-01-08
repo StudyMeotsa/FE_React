@@ -1,4 +1,5 @@
 import { axiosInstance } from '@/api/axiosinstance';
+import axios from 'axios';
 
 /*=======================================스터디룸 생성=====================================*/
 export const studyroomCreate = async (
@@ -39,5 +40,49 @@ export const EnterCode = async (code: string) => {
     });
     return res.data as {success?: boolean; message?: string};
 }
+
+/*==========================================================================================*/
+
+
+/*=================================스터디룸 정보=============================================*/
+// export const studyroomInfo = async() => {
+//     try()
+// }
+/*==========================================================================================*/
+
+/*======================================스터디룸 목록========================================*/
+export type Studyroom = {
+  groupId: number;
+  name: string;
+  startDay: string;
+  endDay: string;
+  weekSession: number;
+  totalSessions: number;
+  studyTimeAim: number;
+  currentMember: number;
+  maxMember: number;
+  sessionId: number;
+  coffee: string | null;
+  coffeeLevel: number | null;
+};
+
+export const studyroomList = async (): Promise<Studyroom[]> => {
+    try{
+        const res = await axiosInstance.get<Studyroom[]>('/studyrooms');
+        return res.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)){
+            console.error('studyroomList API error:', {
+                status: error.response?.status,
+                data: error.response?.data,
+                message: error.message,
+            });
+            throw error;
+        }
+
+        console.error('Unexpected error:', error);
+        throw error;
+    }
+};
 
 /*==========================================================================================*/

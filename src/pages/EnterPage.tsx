@@ -41,7 +41,7 @@ export default function EnterPage() {
 
       if (result?.success){
         alert('입장 성공!');
-        navigate('/studyroomdetail');
+        navigate('/studyroom');
         return;
       }
       alert(result?.message ?? '입장 실패');

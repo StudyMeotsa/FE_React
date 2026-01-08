@@ -9,7 +9,7 @@ import { useState } from 'react';
 export default function TodoPage() {
   const navigate = useNavigate();
   const backButtonClick = () => {
-    navigate('/studyroomdetail');
+    navigate('/studyroom');
   };
 
   const [items, setItems] = useState([
