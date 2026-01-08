@@ -7,12 +7,13 @@ const Title = styled.p`
 `;
 
 const Box = styled.input`
+  margin: 0 2rem;
   width: 80%;
   height: 3rem;
   background-color: white;
   border-radius: 8px;
   border: 1px solid #d2c1b7;
-  padding-left: 1rem;
+  padding: 1rem;
 
   /* Chrome, Safari, Edge */
   &::-webkit-inner-spin-button,
