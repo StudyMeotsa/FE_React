@@ -27,15 +27,19 @@ interface InputProps {
   title: string;
   placeholder?: string;
   type?: string;
+  value: string | number;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function Input({ title, placeholder, type = 'text' }: InputProps) {
+export default function Input({ title, placeholder, type = 'text', value, onChange }: InputProps) {
   return (
     <>
       <Title>{title}</Title>
       <Box
         type={type}
         placeholder={placeholder || title}
+        value={value}
+        onChange={onChange}
       />
     </>
   );

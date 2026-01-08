@@ -51,6 +51,7 @@ function App() {
             { path: '/timer', element: <TimerScreen /> },
             { path: '/todoSession', element: <TodoSession /> },
             { path: '/session/:id', element: <SessionDetail /> },
+            { path: '/TodoPage', element: <TodoPage /> },
           ],
         },
       ],

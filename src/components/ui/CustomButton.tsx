@@ -6,6 +6,7 @@ interface CustomButtonProps {
   size?: 'large' | 'medium' | 'small';
   color?: 'white' | 'brown' | 'darkBrown';
   style?: CSSProperties;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const sizes = {
@@ -72,12 +73,14 @@ export default function CustomButton({
   size = 'small',
   color = 'white',
   style,
+  onClick
 }: CustomButtonProps) {
   return (
     <Button
       size={size}
       color={color}
-      style={style}>
+      style={style}
+      onClick={onClick}>
       {label}
     </Button>
   );

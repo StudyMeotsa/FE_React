@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 import CustomButton from '@/components/ui/CustomButton';
+import { EnterCode } from '@/api/studyrooms';
+import { useNavigate } from 'react-router';
+import { useState } from 'react';
+
 
 const Container = styled.div`
   display: flex;
@@ -28,6 +32,29 @@ const Box = styled.input`
 `;
 
 export default function EnterPage() {
+  const navigate = useNavigate();
+  const [code, setCode] = useState('');
+
+  const enter = async() => {
+    try{
+      const result = await EnterCode(code);
+
+      if (result?.success){
+        alert('입장 성공!');
+        navigate('/studyroomdetail');
+        return;
+      }
+      alert(result?.message ?? '입장 실패');
+    } catch (error: any) {
+      const msg =
+        error?.response?.data?.message ??
+        error?.message ??
+        '입장실패';
+      alert(msg);
+      console.log(error);
+    }
+  };
+
   return (
     <Container>
       <TextContainer>
@@ -42,13 +69,16 @@ export default function EnterPage() {
       </TextContainer>
       <Box
         type='text'
-        placeholder='abcde'
+        placeholder='550e8400'
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
         style={{ marginBottom: '17rem' }}
       />
       <CustomButton
         label='스터디룸 입장하기'
         size='large'
         color='darkBrown'
+        onClick={enter}
       />
     </Container>
   );
