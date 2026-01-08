@@ -5,9 +5,9 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
   background-color: #f5f5f5;
-  position: relative; //여기 추가
+  position: relative;
+  padding-bottom: 2rem;
 `;
 
 export const Title = styled.div`
