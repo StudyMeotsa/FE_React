@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router';
 import axios from 'axios';
+import { axiosInstance } from '@/api/axiosinstance';
+import { getHomeData } from '@/api/homepage';
 import { useState, useEffect } from 'react';
 
 import Lamp from '../assets/lamp.png';
@@ -15,27 +17,14 @@ export default function HomePage() {
 
   useEffect(() => {
     const fetchHomeData = async () => {
-      const token = localStorage.getItem('accessToken');
-
-      if (!token) {
-        console.log('Not token, Need Login');
-        return;
-      }
-
       try {
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-
         const [meResponse, studyroomResponse] = await Promise.all([
-          axios.get('http://3.38.10.43/api/auth/me', config),
-          axios.get('http://3.38.10.43/api/studyrooms', config),
+          getHomeData(),
+          // axiosInstance.get('/api/studyrooms'),
         ]);
         setHomeData({
-          name: meResponse.data.name,
-          sex: meResponse.data.sex,
+          name: meResponse.name,
+          sex: meResponse.sex,
           // 추가로 필요한 데이터 여기에 추가하고 homedata에 올려두기(2군데)
         });
       } catch (error) {
