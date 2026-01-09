@@ -68,7 +68,7 @@ export default function CardCarousel({ interval = 3000 }) {
   }, [paused, index, count, interval, scrollTo, clamp]);
 
   if (count === 0) {
-    return <div className="carousel-container">스터디룸이 없어요.</div>;
+    return <div className="carousel-container" style={{marginLeft:'2rem'}}>스터디룸이 없어요.</div>;
   }
 
   return (

@@ -45,9 +45,34 @@ export const EnterCode = async (code: string) => {
 
 
 /*=================================스터디룸 정보=============================================*/
-// export const studyroomInfo = async() => {
-//     try()
-// }
+export type StudyroomInfoType = {
+    groupId: number;
+    name: string;
+    weekSession: number;
+    totalWeek: number;
+    studyTimeAim: number;
+    maxMember: number;
+    description: string;
+    code: string;
+}
+
+export const studyroomInfo = async (groupId: number) : Promise<StudyroomInfoType> => {
+    try{
+        const res = await axiosInstance.get<StudyroomInfoType>(`/studyrooms/${groupId}`);
+        return res.data;
+    } catch(error){
+        if (axios.isAxiosError(error)) {
+            console.error("studyroomInfo API error:", {
+                status: error.response?.status,
+                data: error.response?.data,
+                message: error.message
+            });
+        } else {
+            console.error('Unexpected error:', error);
+        }
+        throw error;
+    };
+};
 /*==========================================================================================*/
 
 /*======================================스터디룸 목록========================================*/
