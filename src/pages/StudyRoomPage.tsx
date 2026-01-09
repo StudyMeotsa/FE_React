@@ -20,7 +20,7 @@ export default function StudyRoomPage() {
           <PlusModal />
         </div>
       </WaveHeader>
-      <div style={{ marginTop: '-20px' }}>
+      <div style={{ marginTop: '-20px', marginBottom: '2rem' }}>
         <CardCarousel />
       </div>
     </div>
