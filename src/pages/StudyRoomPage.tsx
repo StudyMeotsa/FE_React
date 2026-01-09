@@ -9,13 +9,18 @@ const TextContainer = styled.div`
 `;
 
 export default function StudyRoomPage() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+  const day = now.getDate();
+
   return (
     <div>
       <WaveHeader>
         <div>
           <TextContainer>
             <p style={{ fontSize: '22px', fontWeight: 'Bold' }}>나의 스터디룸</p>
-            <p style={{ marginLeft: '0.35rem' }}>10월 27일 월요일</p>
+            <p style={{ marginLeft: '0.35rem' }}>{year}년 {month}월 {day}일</p>
           </TextContainer>
           <PlusModal />
         </div>
