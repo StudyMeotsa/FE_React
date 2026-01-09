@@ -1,14 +1,50 @@
 import { useNavigate } from 'react-router';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 import Lamp from '../assets/lamp.png';
 import Man from '../assets/man.png';
+import Woman from '../assets/woman.svg';
 import './HomePage.css';
 
 export default function HomePage() {
-  // const Box = styled.div`
-  //   border-radius: 12px;
-  //   padding: 16px;
-  // `;
+  const [homeData, setHomeData] = useState({
+    name: '',
+    sex: '',
+  });
+
+  useEffect(() => {
+    const fetchHomeData = async () => {
+      const token = localStorage.getItem('accessToken');
+
+      if (!token) {
+        console.log('Not token, Need Login');
+        return;
+      }
+
+      try {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        const [meResponse, studyroomResponse] = await Promise.all([
+          axios.get('http://3.38.10.43/api/auth/me', config),
+          axios.get('http://3.38.10.43/api/studyrooms', config),
+        ]);
+        setHomeData({
+          name: meResponse.data.name,
+          sex: meResponse.data.sex,
+          // 추가로 필요한 데이터 여기에 추가하고 homedata에 올려두기(2군데)
+        });
+      } catch (error) {
+        console.error('Data Error:', error);
+      }
+    };
+
+    fetchHomeData();
+  }, []);
 
   const navigate = useNavigate();
   const handleClick = () => {
@@ -24,7 +60,7 @@ export default function HomePage() {
             className='lampImage'
           />
           <div className='intro_text'>
-            <p className='intro_1'>000님,</p>
+            <p className='intro_1'>{homeData.name}님,</p>
             <p className='intro_1'>안녕하세요!</p>
             <p className='intro_2'>바로 시작해볼까요?</p>
           </div>
@@ -36,8 +72,9 @@ export default function HomePage() {
           </button>
         </div>
         <img
-          src={Man}
+          src={homeData.sex === 'M' ? Man : Woman}
           className='manImage'
+          alt='Character'
         />
       </div>
 
@@ -54,7 +91,7 @@ export default function HomePage() {
         <div className='rightInfo'>
           <div className='studygoal'>
             <p className='studygoaltitle'>과제 달성률</p>
-            <button>로그인하기</button>
+            <p className='studygoalM'>11 / 12</p>
           </div>
           <div className='averagestudy'>
             <p className='averagetitle'>하루 평균 공부</p>
