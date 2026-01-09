@@ -13,12 +13,10 @@ export const PlusButton = styled.img`
 `;
 
 export const Overlay = styled.div<{ $open: boolean }>`
-  display: ${({ $open }) => ($open ? 'flex' : 'none')};
+  display: ${({ $open }) => ($open ? 'block' : 'none')};
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 999;
 `;
@@ -27,7 +25,7 @@ export const ModalWrapper = styled.div<{ $open: boolean }>`
   display: ${({ $open }) => ($open ? 'flex' : 'none')};
   position: absolute;
   top: 13%;
-  left: 63%;
+  left: 55%;
   flex-direction: column;
   gap: 0.9rem;
   z-index: 1000;

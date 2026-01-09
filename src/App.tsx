@@ -15,6 +15,7 @@ import MyPage from './pages/MyPage';
 import StudyRoomCreate from './pages/StudyRoomCreate';
 import StudyRoomDetail from './pages/StudyRoomDetail';
 import StudyRoomInfo from './pages/StudyRoomInfo';
+import TodoPage from './pages/TodoPage';
 import StudyRoomPage from './pages/StudyRoomPage';
 
 function App() {
@@ -45,11 +46,12 @@ function App() {
             { path: '/my', element: <MyPage /> },
             { path: '/studyroomCreate', element: <StudyRoomCreate /> },
             { path: '/studyroomdetail', element: <StudyRoomDetail /> },
-            { path: '/studyroominfo', element: <StudyRoomInfo /> },
+            { path: '/studyroomInfo', element: <StudyRoomInfo /> },
             { path: '/enter', element: <EnterPage /> },
             { path: '/timer', element: <TimerScreen /> },
             { path: '/todoSession', element: <TodoSession /> },
             { path: '/session/:id', element: <SessionDetail /> },
+            { path: '/TodoPage', element: <TodoPage /> },
           ],
         },
       ],

@@ -7,12 +7,13 @@ const Title = styled.p`
 `;
 
 const Box = styled.input`
+  margin: 0 2rem;
   width: 80%;
   height: 3rem;
   background-color: white;
   border-radius: 8px;
   border: 1px solid #d2c1b7;
-  padding-left: 1rem;
+  padding: 1rem;
 
   /* Chrome, Safari, Edge */
   &::-webkit-inner-spin-button,
@@ -26,15 +27,19 @@ interface InputProps {
   title: string;
   placeholder?: string;
   type?: string;
+  value: string | number;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function Input({ title, placeholder, type = 'text' }: InputProps) {
+export default function Input({ title, placeholder, type = 'text', value, onChange }: InputProps) {
   return (
     <>
       <Title>{title}</Title>
       <Box
         type={type}
         placeholder={placeholder || title}
+        value={value}
+        onChange={onChange}
       />
     </>
   );

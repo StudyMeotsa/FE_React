@@ -9,8 +9,13 @@ export default function PlusModal() {
   const [open, setOpen] = useState(false);
 
   const modal = (
-    <>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+      }}>
       <S.Overlay
+        className='m-auto w-full max-w-lg'
         $open={open}
         onClick={() => setOpen(false)}
       />
@@ -26,7 +31,7 @@ export default function PlusModal() {
           </S.Modal>
         </Link>
       </S.ModalWrapper>
-    </>
+    </div>
   );
 
   return (
@@ -35,6 +40,7 @@ export default function PlusModal() {
         src={Plus}
         alt='button'
         onClick={() => setOpen(true)}
+        style={{ cursor: 'pointer' }}
       />
       {open && ReactDOM.createPortal(modal, document.body)}
     </>
