@@ -1,15 +1,15 @@
+import { studyroomList, type Studyroom } from '@/api/studyrooms'; // API 변경
+import back from '@/assets/back.svg';
+import info from '@/assets/info.svg';
+import sample1 from '@/assets/sample1.svg';
+import sample2 from '@/assets/sample2.svg';
+import sample3 from '@/assets/sample3.svg';
+import stamp from '@/assets/stamp.svg';
 import WaveHeader from '@/components/WaveHeader';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import back from '../assets/back.svg';
-import info from '../assets/info.svg';
 import './StudyRoomDetail.css';
-// import detailman from '../assets/detailman.svg';
-import sample1 from '../assets/sample1.svg';
-import sample2 from '../assets/sample2.svg';
-import sample3 from '../assets/sample3.svg';
-import stamp from '../assets/stamp.svg';
 
 const TextContainer = styled.div`
   margin-top: -2.7rem;
@@ -87,9 +87,46 @@ function NoticeItem({ noticetitle, noticecontent }: NoticeItemProps) {
 
 export default function StudyRoomDetail() {
   const navigate = useNavigate();
+  const { groupId } = useParams<{ groupId: string }>(); // URL에서 groupId 추출
+
+  // 상태 타입을 Studyroom | null 로 변경
+  const [room, setRoom] = useState<Studyroom | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // API 호출 및 필터링 로직
+  useEffect(() => {
+    const fetchAndFindRoom = async () => {
+      if (!groupId) return;
+
+      try {
+        setLoading(true);
+        // 1. 전체 리스트 가져오기
+        const allRooms = await studyroomList();
+
+        // 2. 현재 groupId와 일치하는 방 찾기 (타입 변환 주의)
+        const targetRoom = allRooms.find((r) => r.groupId === Number(groupId));
+
+        if (targetRoom) {
+          setRoom(targetRoom);
+        } else {
+          alert('해당 스터디룸 정보를 찾을 수 없습니다.');
+          navigate('/studyroom');
+        }
+      } catch (error) {
+        console.error('Failed to fetch study room list:', error);
+        alert('데이터를 불러오는 중 오류가 발생했습니다.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAndFindRoom();
+  }, [groupId, navigate]);
+
   const infoButtonClick = () => {
     navigate('/studyroominfo');
   };
+
   const backButtonClick = () => {
     navigate('/studyroom');
   };
@@ -102,13 +139,23 @@ export default function StudyRoomDetail() {
     setIsStampModalOpen(false);
   };
 
+  if (loading) {
+    return <div style={{ padding: '2rem', textAlign: 'center' }}>로딩 중...</div>;
+  }
+
+  if (!room) {
+    return <div style={{ padding: '2rem', textAlign: 'center' }}>데이터가 없습니다.</div>;
+  }
+
   return (
     <div>
       <WaveHeader>
         <div>
           <TextContainer>
-            <p style={{ fontSize: '22px', fontWeight: 'Bold' }}>알고리즘 스터디</p>
-            <p style={{ marginLeft: '0.35rem' }}>10월 27일 월요일</p>
+            {/* 찾은 room 데이터 바인딩 */}
+            <p style={{ fontSize: '22px', fontWeight: 'Bold' }}>{room.name}</p>
+            {/* startDay를 표시하거나 기존 하드코딩 유지 */}
+            <p style={{ marginLeft: '0.35rem' }}>{room.startDay}</p>
           </TextContainer>
           <button onClick={infoButtonClick}>
             <img
@@ -145,20 +192,13 @@ export default function StudyRoomDetail() {
         </button>
       </div>
 
+      {/* Studyroom 타입에 description이 없으므로 임시 텍스트 처리 */}
       <NoticeItem
-        noticetitle='공지글 축소 상태입니다.'
-        noticecontent='공지글 전체 확장입니다. 누르면 그 자리에서 그대로 전체 길이 확장되어 보입니다. 확장된상태에서 다시 누르면 이전처럼 다시 축소됩니다.'
+        noticetitle='공지사항'
+        noticecontent={`현재 ${room.sessionId}회차 진행 중입니다. (목표: 총 ${room.totalSessions}회)`}
       />
 
       <div className='tablecontainers'>
-        {/* <div>
-          <img
-            src={detailman}
-            alt={detailman}
-          />
-          <div>안녕1</div>
-        </div> */}
-
         <img
           className='sample'
           src={sample1}
@@ -178,7 +218,6 @@ export default function StudyRoomDetail() {
 
       {isStampModalOpen && (
         <ModalOverlay onClick={closeStampModal}>
-          {/* 박스 클릭 시에는 닫히지 않도록 stopPropagation 설정 */}
           <SquareModalBox onClick={(e) => e.stopPropagation()}>
             <h1
               style={{

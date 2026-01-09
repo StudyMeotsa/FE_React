@@ -45,10 +45,13 @@ export const createSession = async (
   body: CreateSessionRequest
 ): Promise<CreateSessionResponse> => {
   try {
+    console.log(body);
     const { data } = await axiosInstance.post<CreateSessionResponse>(
       `/studyrooms/${groupId}/sessions`,
       body
     );
+
+    console.log('세션 생성 성공', data);
     return data;
   } catch (error) {
     console.error('세션 생성 실패:', error);
