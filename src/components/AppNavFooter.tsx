@@ -9,9 +9,11 @@ export default function AppNavFooter() {
   ];
 
   return (
-    <div className='fixed bottom-0 left-16 flex w-full max-w-lg justify-evenly gap-10 border border-black bg-white p-2'>
+    <div className='fixed right-0 bottom-0 left-0 mx-auto flex w-full max-w-lg justify-evenly gap-10 border border-black bg-white p-2'>
       {navRoute.map((nav) => (
-        <Link to={nav.path}>
+        <Link
+          key={nav.path}
+          to={nav.path}>
           <div>{nav.label}</div>
         </Link>
       ))}

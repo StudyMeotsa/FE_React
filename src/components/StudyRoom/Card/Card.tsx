@@ -1,20 +1,26 @@
 import * as S from './CardStyled';
 import Latte from '@/assets/Latte.png';
 import { Link } from 'react-router-dom';
+import type { Studyroom } from '@/api/studyrooms';
 
-export default function Card() {
+type Props = {
+  room: Studyroom;
+};
+
+export default function Card({room}: Props) {
+
   return (
-    <Link to='/studyroomdetail'>
+    <Link to='/studyroomdetail/${room.groupId}'>
       <S.Container>
         <S.Top>
-          <S.Title>알고리즘</S.Title>
-          <S.Button>8주 플랜</S.Button>
+          <S.Title>{room.name}</S.Title>
+          <S.Button>{Math.ceil(room.totalSessions / room.weekSession)}주 플랜</S.Button>
         </S.Top>
         <S.Content>
-          <S.ContentText>주간 세션: 2회 / 총 16회</S.ContentText>
-          <S.ContentText>세션 최소 공부량: 2시간</S.ContentText>
-          <S.ContentText>스터디 인원: 12명 / 20명</S.ContentText>
-          <S.ContentText>현재 세션: 5회차</S.ContentText>
+          <S.ContentText><span className='font-bold'>주간 세션:</span> {room.weekSession}회 / 총 {room.totalSessions}회</S.ContentText>
+          <S.ContentText><span className='font-bold'>세션 최소 공부량:</span> {room.studyTimeAim}분</S.ContentText>
+          <S.ContentText><span className='font-bold'>스터디 인원:</span> {room.currentMember}명 / {room.maxMember}명</S.ContentText>
+          <S.ContentText><span className='font-bold'>현재 세션:</span> {room.sessionId}회차</S.ContentText>
         </S.Content>
         <S.Image
           src={Latte}

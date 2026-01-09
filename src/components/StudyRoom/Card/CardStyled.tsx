@@ -25,17 +25,16 @@ export const Top = styled.div`
 export const Title = styled.div`
   display: inline-block;
   padding: 10px 25px 8px 25px;
-  border-bottom: 1px solid #ac7349;
+  border-bottom: 2px solid #ac7349;
   font-size: 20px;
   font-weight: 600;
 `;
 
 export const Button = styled.button`
-  width: 90px;
-  height: 40px;
+  display: inline-block;
+  padding: 0.7rem 1.5rem;
   background-color: #f0f0f0;
   border-radius: 20px;
-  padding: 5px 16px;
   -webkit-text-fill-color: #424242;
   font-size: 14px;
   font-weight: 500;
