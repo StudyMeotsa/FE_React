@@ -21,6 +21,7 @@ export const studyroomCreate = async (
       studyTimeAim,
       description,
     });
+
     console.log('스터디룸 생성 성공(code):', code.data);
     return code.data;
   } catch (error: any) {
@@ -76,6 +77,7 @@ export const studyroomInfo = async (groupId: number): Promise<StudyroomInfoType>
 /*======================================스터디룸 목록========================================*/
 export type Studyroom = {
   groupId: number;
+  sessionId: number;
   name: string;
   startDay: string;
   endDay: string;
@@ -84,8 +86,8 @@ export type Studyroom = {
   studyTimeAim: number;
   currentMember: number;
   maxMember: number;
-  sessionId: number;
-  coffee: string | null;
+  sessionOrder: number; // JSON 데이터에 맞춰 추가됨
+  coffee: string | null; // 데이터에 값이 있지만, 없을 경우를 대비해 null 유지 권장
   coffeeLevel: number | null;
 };
 
