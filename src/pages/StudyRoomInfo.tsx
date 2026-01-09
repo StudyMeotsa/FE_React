@@ -8,7 +8,7 @@ import './StudyRoomInfo.css';
 export default function StudyRoomCreate() {
   const navigate = useNavigate();
   const backButtonClick = () => {
-    navigate('/studyroomdetail');
+    navigate('/studyroom');
   };
 
   return (

@@ -69,6 +69,7 @@ export type Studyroom = {
 export const studyroomList = async (): Promise<Studyroom[]> => {
     try{
         const res = await axiosInstance.get<Studyroom[]>('/studyrooms');
+        console.log(res.data);
         return res.data;
     } catch (error) {
         if (axios.isAxiosError(error)){

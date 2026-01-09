@@ -17,10 +17,10 @@ export default function Card({room}: Props) {
           <S.Button>{Math.ceil(room.totalSessions / room.weekSession)}주 플랜</S.Button>
         </S.Top>
         <S.Content>
-          <S.ContentText>주간 세션: {room.weekSession}회 / 총 {room.totalSessions}회</S.ContentText>
-          <S.ContentText>세션 최소 공부량: {room.studyTimeAim}분</S.ContentText>
-          <S.ContentText>스터디 인원: {room.currentMember}명 / {room.maxMember}명</S.ContentText>
-          <S.ContentText>현재 세션: {room.sessionId}회차</S.ContentText>
+          <S.ContentText><span className='font-bold'>주간 세션:</span> {room.weekSession}회 / 총 {room.totalSessions}회</S.ContentText>
+          <S.ContentText><span className='font-bold'>세션 최소 공부량:</span> {room.studyTimeAim}분</S.ContentText>
+          <S.ContentText><span className='font-bold'>스터디 인원:</span> {room.currentMember}명 / {room.maxMember}명</S.ContentText>
+          <S.ContentText><span className='font-bold'>현재 세션:</span> {room.sessionId}회차</S.ContentText>
         </S.Content>
         <S.Image
           src={Latte}
