@@ -1,7 +1,7 @@
 import SessionItem from '@/components/SessionItem';
 import { ArrowLeft, Coffee, Plus } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 
 // Shadcn UI Components
 import { Button } from '@/components/ui/button';
@@ -32,6 +32,11 @@ export default function TodoSession() {
   const navigate = useNavigate();
   const location = useLocation();
   const idList = location.state;
+
+  const { groupId, sessionId } = useParams<{
+    groupId: string;
+    sessionId: string;
+  }>();
 
   // --------------------------------------------------------------------------
   // [상태 관리] 세션 리스트 (기존 더미데이터를 초기값으로 설정)
@@ -66,32 +71,60 @@ export default function TodoSession() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [newTitle, setNewTitle] = useState('');
   const [newDesc, setNewDesc] = useState(''); // 설명은 상세페이지에서 쓸 수 있지만, 리스트엔 제목만 표시
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // --------------------------------------------------------------------------
   // [핸들러] 할 일 추가
   // --------------------------------------------------------------------------
-  const handleAddSession = () => {
+  const handleAddSession = async () => {
     if (!newTitle.trim()) {
       alert('할 일 제목을 입력해주세요!');
       return;
     }
 
-    // 새로운 세션 객체 생성
-    const newSession: SessionData = {
-      id: Date.now(), // 고유 ID 생성 (간단히 타임스탬프 사용)
-      text: newTitle,
-      count: '0 / 12 명', // 초기 인원
-      completed: false,
-      // subText: newDesc, // 필요하다면 설명을 subText로 활용 가능
-    };
+    // params 유효성 체크 (숫자 변환)
+    const gid = Number(groupId);
+    const sid = Number(sessionId);
 
-    // 리스트 상태 업데이트
-    setSessions((prev) => [...prev, newSession]);
+    if (!Number.isFinite(gid) || !Number.isFinite(sid)) {
+      alert('groupId/sessionId가 올바르지 않습니다. 라우트 파라미터를 확인해주세요.');
+      return;
+    }
 
-    // 입력값 초기화 및 모달 닫기
-    setNewTitle('');
-    setNewDesc('');
-    setIsAddModalOpen(false);
+    try {
+      setIsSubmitting(true);
+
+      // ✅ request body: { title, description }
+      const res = await createSessionChecklist(gid, sid, {
+        title: newTitle,
+        description: newDesc.trim() || '상세 설명이 없습니다.', // 빈 값일 때 기본 문구 삽입 테스트
+      });
+
+      if (res.success) {
+        // ✅ 성공하면 리스트에 추가 (백엔드가 checklistId를 안 주니까 일단 임시 id로)
+        const newSession: SessionData = {
+          id: Date.now(),
+          text: newTitle,
+          subText: newDesc ? newDesc : undefined,
+          count: '0 / 12 명',
+          completed: false,
+        };
+
+        setSessions((prev) => [...prev, newSession]);
+
+        // 초기화 + 닫기
+        setNewTitle('');
+        setNewDesc('');
+        setIsAddModalOpen(false);
+      } else {
+        alert('생성에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('세션 할 일 생성 중 오류가 발생했습니다.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

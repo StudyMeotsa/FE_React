@@ -124,7 +124,7 @@ export default function StudyRoomDetail() {
   }, [groupId, navigate]);
 
   const infoButtonClick = () => {
-    navigate('/studyroominfo');
+    navigate(`/studyroominfo/${groupId}`);
   };
 
   const backButtonClick = () => {
@@ -182,14 +182,7 @@ export default function StudyRoomDetail() {
         </button>
         <button
           className='todo'
-          onClick={() =>
-            navigate('/todoSession', {
-              state: {
-                groupId: Number(room.groupId),
-                sessionId: Number(room.sessionId),
-              },
-            })
-          }>
+          onClick={() => navigate(`/studyroom/${groupId}/sessions/${room.sessionId}/todo`)}>
           세션 할 일
         </button>
         <button
