@@ -1,7 +1,7 @@
 import SessionItem from '@/components/SessionItem';
 import { ArrowLeft, Coffee, Plus } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useState, useEffect, useMemo } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // Shadcn UI Components
 import { Button } from '@/components/ui/button';
@@ -27,11 +27,15 @@ interface SessionData {
   count: string;
   completed: boolean;
 }
+interface CoffeeStatus {
+  type: string;
+  level: number;
+  requiredPerLevel: number;
+  current: number;
+}
 
 export default function TodoSession() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const idList = location.state;
 
   const { groupId, sessionId } = useParams<{
     groupId: string;
@@ -46,32 +50,51 @@ export default function TodoSession() {
     { id: 2, text: '3주차 수업 내용 정리하기', count: '10 / 12 명', completed: true },
   ]);
 
+  const [coffee, setCoffee] = useState<CoffeeStatus>({
+    type: '',
+    level: 0,
+    requiredPerLevel: 0,
+    current: 0,
+  });
+
   useEffect(() => {
-    if (!idList?.groupId || !idList?.sessionId) {
+    if (!groupId || !sessionId) {
       console.log('아직 데이터가 준비되지 않았습니다. (Pass)');
       return;
     }
 
-    getSessionChecklists(Number(idList.groupId), Number(idList.sessionId))
+    getSessionChecklists(Number(groupId), Number(sessionId))
       .then((res) => {
-        const newList = res.checklists.map((item) => ({
+        const newList = res.checklists.map((item: any) => ({
           id: item.checklistId, // 백엔드 ID -> 프론트 ID
           text: item.title, // 제목
           count: `${item.doneMember} / ${item.maxMember} 명`,
           completed: item.mySubmission, // 완료 여부
         }));
         setSessions(newList);
+
+        if (res.coffee) {
+          setCoffee(res.coffee);
+        }
       })
       .catch((err) => {
         console.error('불러오기 실패:', err);
       });
-  }, [idList]);
+  }, [groupId, sessionId]);
 
   // 모달 및 입력값 상태
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [newTitle, setNewTitle] = useState('');
   const [newDesc, setNewDesc] = useState(''); // 설명은 상세페이지에서 쓸 수 있지만, 리스트엔 제목만 표시
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // --------------------------------------------------------------------------
+  // [계산] 진행률 및 커피 계산
+  // --------------------------------------------------------------------------
+  const coffeePercentage = useMemo(() => {
+    if (coffee.requiredPerLevel === 0) return 0;
+    return Math.min(100, Math.round((coffee.current / coffee.requiredPerLevel) * 100));
+  }, [coffee]);
 
   // --------------------------------------------------------------------------
   // [핸들러] 할 일 추가
@@ -162,15 +185,15 @@ export default function TodoSession() {
             <div className='relative h-3 w-full rounded-full bg-gray-200'>
               <div
                 className='absolute top-0 left-0 h-3 rounded-full bg-[#D4C4A6]'
-                style={{ width: '80%' }}></div>
+                style={{ width: `${coffeePercentage}%` }}></div>
             </div>
             <div className='mt-1 flex justify-between text-sm font-medium text-gray-500'>
               <span>0</span>
-              <span>80</span>
+              <span>{coffee.requiredPerLevel}</span>
             </div>
           </div>
 
-          <div className='mt-2 text-lg font-bold text-[#6F4E37]'>☕ 80알</div>
+          <div className='mt-2 text-lg font-bold text-[#6F4E37]'>☕ {coffee.current}알</div>
         </div>
 
         {/* 2) 리스트 영역 (State인 sessions를 렌더링) */}
