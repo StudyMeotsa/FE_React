@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 
-// 카드 전체 컨테이너
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -13,7 +12,6 @@ export const Container = styled.div`
   box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.4);
 `;
 
-// 카드 Top(스터디 과목 + 플랜)
 export const Top = styled.div`
   display: flex;
   align-items: center;
@@ -35,13 +33,13 @@ export const Button = styled.button`
   padding: 0.7rem 1.5rem;
   background-color: #f0f0f0;
   border-radius: 20px;
-  -webkit-text-fill-color: #424242;
+  color: #424242;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
+  border: none;
 `;
 
-// 카드의 세부 정보
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
@@ -53,10 +51,9 @@ export const Content = styled.div`
 export const ContentText = styled.p`
   font-size: 16px;
   font-weight: 500;
-  -webkit-text-fill-color: #572908;
+  color: #572908;
 `;
 
-// 카드 이미지
 export const Image = styled.img`
   width: 165px;
   height: 175px;
@@ -64,7 +61,6 @@ export const Image = styled.img`
   margin-left: 140px;
 `;
 
-// 카드 진도율
 export const ProgressContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -72,17 +68,27 @@ export const ProgressContainer = styled.div`
   gap: 5px;
 `;
 
-export const Progress = styled.span`
+// 흰색 배경 바 (전체 길이)
+export const ProgressTrack = styled.div`
   width: 255px;
   height: 11px;
   border-radius: 2px;
   background-color: white;
+  overflow: hidden;
+`;
+
+// 실제 채워지는 색상 바 (props로 width를 받음)
+export const ProgressFill = styled.div<{ $width: number }>`
+  width: ${(props) => props.$width}%;
+  height: 100%;
+  background-color: #ac7349;
+  transition: width 0.3s ease-in-out;
 `;
 
 export const ProgressText = styled.p`
   font-size: 11px;
   font-weight: 300;
-  -webkit-text-fill-color: white;
+  color: white;
   align-self: flex-start;
   margin-left: 45px;
 `;

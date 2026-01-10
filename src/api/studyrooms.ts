@@ -87,8 +87,7 @@ export type Studyroom = {
   currentMember: number;
   maxMember: number;
   sessionOrder: number; // JSON 데이터에 맞춰 추가됨
-  coffee: string | null; // 데이터에 값이 있지만, 없을 경우를 대비해 null 유지 권장
-  coffeeLevel: number | null;
+  coffeeImagePath: string;
 };
 
 export const studyroomList = async (): Promise<Studyroom[]> => {
