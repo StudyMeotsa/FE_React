@@ -7,8 +7,25 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import type { StudyroomInfoType } from '@/api/studyrooms';
+import { leaveStudyroom } from '@/api/studyrooms';
 
 export default function StudyRoomCreate() {
+  // [핸들러] 스터디룸 나가기
+  const handleLeaveRoom = async () => {
+    if (!window.confirm("정말로 이 스터디룸을 나가시겠습니까?")) return;
+    
+    try {
+      const id = Number(groupId);
+      const res = await leaveStudyroom(id);
+      if (res.success) {
+        alert("스터디룸에서 퇴장하였습니다.");
+        navigate('/studyroom'); // 목록 페이지로 이동
+      }
+    } catch (err) {
+      alert("나가기에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
   const navigate = useNavigate();
   const { groupId } = useParams();
 
@@ -17,6 +34,7 @@ export default function StudyRoomCreate() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const backButtonClick = () => {navigate('/studyroom');};
+
 
   useEffect(() => {
     const fetchInfo = async() => {
@@ -83,6 +101,8 @@ export default function StudyRoomCreate() {
     );
   }
 
+  
+
   return (
     <S.Container>
       <div className='w-sm flex items-center justify-center relative py-4 border-b border-yellow-950'>
@@ -122,6 +142,7 @@ export default function StudyRoomCreate() {
         size='large'
         color='darkBrown'
         style={{ marginTop: '2rem' }}
+        onClick={handleLeaveRoom}
       />
     </S.Container>
   );
