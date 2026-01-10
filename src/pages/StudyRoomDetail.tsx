@@ -107,6 +107,7 @@ export default function StudyRoomDetail() {
         const targetRoom = allRooms.find((r) => r.groupId === Number(groupId));
 
         if (targetRoom) {
+          console.log('현재 찾은 방의 데이터 상세:', targetRoom);
           setRoom(targetRoom);
         } else {
           alert('해당 스터디룸 정보를 찾을 수 없습니다.');
