@@ -75,6 +75,7 @@ export default function HomePage() {
           </div>
           <div className='weekstudy'>
             <p className='weekstudytitle'>주간 공부량</p>
+            <p className='todayclock'>37:30</p>
           </div>
         </div>
         <div className='rightInfo'>

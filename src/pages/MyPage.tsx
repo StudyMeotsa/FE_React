@@ -1,13 +1,44 @@
+import { useEffect, useState } from 'react';
 import { Bell } from 'lucide-react';
 import { Label } from '@/components/ui/label'; // shadcn label 컴포넌트 경로 확인 필요
+import { getMyInfo } from '@/api/auth';
 
 export default function MyPage() {
   // 실제 데이터는 props나 API를 통해 받아올 수 있습니다.
+  const [info, setInfo] = useState({
+    name: '',
+    email: '',
+    sex: '',
+  });
+
+  useEffect(() => {
+    getMyInfo().then((res) => {
+      setInfo({
+        name: res.name,
+        email: res.email,
+        sex: res.sex,
+      });
+    });
+  }, []);
+
+  // 스터디 목적인데 일단 이름API로 연결
+  const [goalInfo, setGoalInfo] = useState({
+    goal: '',
+  });
+
+  useEffect(() => {
+    getMyInfo().then((res) => {
+      setGoalInfo({
+        goal: res.name,
+      });
+    });
+  }, []);
+
   const userInfo = {
-    name: '김멋사',
-    email: 'sdgsdfsdghrfg@gmail.com',
-    age: '20',
-    studyGoal: '대학교 수업 공부',
+    name: info.name,
+    email: info.email,
+    sex: info.sex,
+    studyGoal: goalInfo.goal,
   };
 
   // 정보 항목을 표시하는 재사용 가능한 컴포넌트
@@ -56,8 +87,8 @@ export default function MyPage() {
             value={userInfo.email}
           />
           <InfoItem
-            label='나이'
-            value={userInfo.age}
+            label='성별'
+            value={userInfo.sex}
           />
           {/* 스터디 목적은 내용이 길어질 수 있으므로 높이를 더 줍니다 */}
           <InfoItem

@@ -1,7 +1,7 @@
 import SessionItem from '@/components/SessionItem';
 import { ArrowLeft, Coffee, Plus } from 'lucide-react';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 // Shadcn UI Components
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,9 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { studyroomList } from '@/api/studyrooms';
+import { getSessionChecklists } from '@/api/studyRooomEvent';
+import { createSessionChecklist } from '@/api/studyRooomEvent';
 
 // 세션 아이템 타입 정의
 interface SessionData {
@@ -27,6 +30,8 @@ interface SessionData {
 
 export default function TodoSession() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const idList = location.state;
 
   // --------------------------------------------------------------------------
   // [상태 관리] 세션 리스트 (기존 더미데이터를 초기값으로 설정)
@@ -35,6 +40,27 @@ export default function TodoSession() {
     { id: 1, text: '타이머 채우기', subText: '120 분', count: '10 / 12 명', completed: false },
     { id: 2, text: '3주차 수업 내용 정리하기', count: '10 / 12 명', completed: true },
   ]);
+
+  useEffect(() => {
+    if (!idList?.groupId || !idList?.sessionId) {
+      console.log('아직 데이터가 준비되지 않았습니다. (Pass)');
+      return;
+    }
+
+    getSessionChecklists(Number(idList.groupId), Number(idList.sessionId))
+      .then((res) => {
+        const newList = res.checklists.map((item) => ({
+          id: item.checklistId, // 백엔드 ID -> 프론트 ID
+          text: item.title, // 제목
+          count: `${item.doneMember} / ${item.maxMember} 명`,
+          completed: item.mySubmission, // 완료 여부
+        }));
+        setSessions(newList);
+      })
+      .catch((err) => {
+        console.error('불러오기 실패:', err);
+      });
+  }, [idList]);
 
   // 모달 및 입력값 상태
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);

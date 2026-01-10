@@ -182,7 +182,14 @@ export default function StudyRoomDetail() {
         </button>
         <button
           className='todo'
-          onClick={() => navigate('/todoSession')}>
+          onClick={() =>
+            navigate('/todoSession', {
+              state: {
+                groupId: Number(room.groupId),
+                sessionId: Number(room.sessionId),
+              },
+            })
+          }>
           세션 할 일
         </button>
         <button
