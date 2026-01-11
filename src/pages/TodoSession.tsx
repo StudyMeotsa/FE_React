@@ -186,7 +186,9 @@ export default function TodoSession() {
           {sessions.map((item) => (
             <div
               key={item.id}
-              onClick={() => navigate(`/session/${item.id}`)}
+              onClick={() => {
+                navigate(`/studyroom/${groupId}/sessions/${sessionId}/checklists/${item.id}`);
+              }}
               className='cursor-pointer transition-transform active:scale-[0.98]'>
               <SessionItem
                 text={item.text}

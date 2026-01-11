@@ -137,31 +137,32 @@ export const createSessionChecklist = async (
   }
 };
 
-// 제출현황
-// 1. 응답 데이터 타입 정의
-// 제공된 JSON이 snake_case를 사용하므로 키 이름을 그대로 맞춥니다.
-export type SubmissionStatusResponse = {
-  session_id: number;
-  checklist_id: number;
-  content: string;
-  description: string;
-  start_time: string; // 예: "2026-01-01"
-  end_time: string;
-  completed: boolean;
-
-  // 글 인증(Task) 또는 타이머 시간(String) 등이 들어옴. 없으면 null
-  submission_data: string | null;
-
-  // 사진 인증(Image)의 URL. 없으면 null
-  image_path: string | null;
-
-  // 타이머 현재 시간 (초 단위 등으로 추정)
-  time_current: number;
-
-  is_verified: boolean;
+// [GET] 제출 현황 - 개별 제출 항목 타입 (명세서 submissions 배열 내부)
+export type SubmissionItem = {
+  id: number;
+  content: string | null;
+  imagePath: string | null;
+  isVerified: boolean;
+  submittedAt: string; // "2026-01-11T..."
+  username: string; // "test1234"
 };
 
-// 2. API 함수
+// [GET] 제출 현황 전체 응답 타입 (명세서 구조 반영)
+export type SubmissionStatusResponse = {
+  session: {
+    id: number;
+    title: string | null;
+    startTime: string;
+    endTime: string;
+  };
+  checklist: {
+    title: string;
+    description: string;
+  };
+  submissions: SubmissionItem[]; // 제출된 목록 배열
+};
+
+// 2. 제출 현황 조회 API
 export const getSubmissionStatus = async (
   groupId: number,
   sessionId: number,
@@ -171,6 +172,7 @@ export const getSubmissionStatus = async (
     const { data } = await axiosInstance.get<SubmissionStatusResponse>(
       `/studyrooms/${groupId}/sessions/${sessionId}/checklists/${checklistId}`
     );
+    console.log('제출 현황', data);
     return data;
   } catch (error) {
     console.error('제출 현황 조회 실패:', error);
@@ -179,37 +181,53 @@ export const getSubmissionStatus = async (
 };
 
 //체크리스트 제출
-// 1. 요청 데이터 타입 (Request Body)
-// 명세서의 Request 컬럼 참고 (camelCase)
+// 1. 요청 데이터 타입 (File 객체 포함)
 export type SubmitChecklistRequest = {
-  memberId: number;
-  content?: string; // 글 인증 시 사용
-  timeAim?: number; // 타이머 목표 설정 등 (명세서 예시: 60)
-  imagePath?: string; // 사진 인증 시 사용
+  memberId: number; // 명세서엔 없지만 요청하신 타입에 있어 포함 (필요 없다면 제거)
+  content?: string;
+  file?: File; // imagePath(string) -> file(File)로 변경 (Multipart 전송용)
 };
 
-// 2. 응답 데이터 타입 (Response Body)
-// 명세서의 Response 컬럼 참고 (snake_case)
+// 2. 응답 데이터 타입
 export type SubmitChecklistResponse = {
   member_id: number;
-  submission_data: string | null; // "제출할 텍스트 내용" 또는 "120" 등
-  image_path: string | null; // S3 이미지 URL 등
+  submission_data: string | null;
+  image_path: string | null;
 };
 
-// 3. API 함수
+// 3. API 함수 (FormData 사용)
 export const submitChecklist = async (
   groupId: number,
   sessionId: number,
   checklistId: number,
-  body: SubmitChecklistRequest
+  data: SubmitChecklistRequest
 ): Promise<SubmitChecklistResponse> => {
   try {
-    // URL의 {checklist_id} 부분에 checklistId 변수를 넣습니다.
-    const { data } = await axiosInstance.post<SubmitChecklistResponse>(
+    const formData = new FormData();
+
+    // 명세서에 맞게 데이터 append
+    // (보통 memberId는 토큰에서 가져오지만, 요청하신 타입대로 body에 넣습니다)
+    formData.append('memberId', String(data.memberId));
+
+    if (data.content) {
+      formData.append('content', data.content);
+    }
+
+    if (data.file) {
+      formData.append('file', data.file); // 명세서 Key: 'file'
+    }
+
+    // axios가 FormData를 감지하면 자동으로 Content-Type: multipart/form-data를 설정합니다.
+    const response = await axiosInstance.post<SubmitChecklistResponse>(
       `/studyrooms/${groupId}/sessions/${sessionId}/checklists/${checklistId}`,
-      body
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
     );
-    return data;
+    return response.data;
   } catch (error) {
     console.error('체크리스트 인증 제출 실패:', error);
     throw error;
