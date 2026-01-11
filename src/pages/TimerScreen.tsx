@@ -1,12 +1,16 @@
+import { endTimer } from '@/api/studyRoomSubEvent'; // API import 경로 확인
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react'; // lucide-react 아이콘 사용 (없으면 생략 가능)
+import { ArrowLeft } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router-dom'; // react-router-dom 사용 권장
 
 type TimerStatus = 'idle' | 'running' | 'paused';
 
 export default function TimerScreen() {
   const navigate = useNavigate();
+  // 1. URL 파라미터에서 ID 추출
+  const { groupId, sessionId } = useParams<{ groupId: string; sessionId: string }>();
+
   const [time, setTime] = useState(0); // 총 경과 시간 (초)
   const [status, setStatus] = useState<TimerStatus>('idle');
 
@@ -23,7 +27,7 @@ export default function TimerScreen() {
     return () => clearInterval(interval);
   }, [status]);
 
-  // 시간 포맷팅 (HH:MM:SS)
+  // 시간 포맷팅 (화면 표시용 HH:MM:SS)
   const formatTime = (totalSeconds: number) => {
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -31,19 +35,61 @@ export default function TimerScreen() {
     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   };
 
-  // 종료 핸들러
-  const handleSubmit = () => {
-    console.log('서버로 데이터 전송:', time);
-    setStatus('idle');
-    setTime(0);
+  // API 전송용 날짜 포맷팅 (yyyy-MM-dd'T'HH:mm:ss)
+  const formatDateTimeForApi = (date: Date) => {
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const month = pad(date.getMonth() + 1);
+    const day = pad(date.getDate());
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+    const seconds = pad(date.getSeconds());
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  };
+
+  // 2. 종료 핸들러 (API 호출)
+  const handleSubmit = async () => {
+    if (!groupId || !sessionId) {
+      alert('잘못된 접근입니다.');
+      return;
+    }
+
+    // 0초면 전송하지 않음 (선택 사항)
+    if (time === 0) {
+      alert('공부 시간이 0초입니다.');
+      return;
+    }
+
+    try {
+      setStatus('paused'); // 일단 멈춤
+
+      const now = new Date();
+      const body = {
+        time: time, // 초 단위
+        createdAt: formatDateTimeForApi(now),
+      };
+
+      console.log('서버로 데이터 전송:', body);
+
+      // API 호출
+      await endTimer(Number(groupId), Number(sessionId), body);
+
+      alert('공부가 종료되었습니다! 고생하셨어요 👏');
+
+      // 성공 시 뒤로가기 혹은 목록으로 이동
+      navigate(-1);
+    } catch (error) {
+      console.error(error);
+      alert('데이터 전송에 실패했습니다.');
+      setStatus('running'); // 실패 시 다시 진행 상태로 복구? (선택)
+    }
   };
 
   // 원형 프로그레스 계산
-  const radius = 120; // 반지름
-  const stroke = 12; // 테두리 두께
+  const radius = 120;
+  const stroke = 12;
   const normalizedRadius = radius - stroke * 2;
   const circumference = normalizedRadius * 2 * Math.PI;
-  // 1분(60초) 단위로 0~100% 진행. 60초가 되면 0으로 리셋되어 다시 시작
   const secondsInMinute = time % 60;
   const strokeDashoffset = circumference - (secondsInMinute / 60) * circumference;
 
@@ -56,19 +102,17 @@ export default function TimerScreen() {
             onClick={() => navigate(-1)}
           />
           <h1 className='text-xl font-bold'>타이머</h1>
-          <div className='w-6' /> {/* 레이아웃 밸런스용 빈 박스 */}
+          <div className='w-6' />
         </div>
         <div className='pt-20 text-center'>{status !== 'idle' && <RunningText />}</div>
       </div>
 
       {/* 메인 타이머 영역 */}
       <div className='relative flex items-center justify-center rounded-full bg-[#EFEAE4] p-1 shadow-2xs'>
-        {/* SVG 원형 게이지 */}
         <svg
           height={radius * 2}
           width={radius * 2}
           className='rotate-[-90deg] transition-all duration-1000 ease-linear'>
-          {/* 배경 원 (회색 #D2D4D8) */}
           <circle
             stroke='#D2D4D8'
             fill='transparent'
@@ -77,10 +121,9 @@ export default function TimerScreen() {
             cx={radius}
             cy={radius}
           />
-          {/* 진행 원 (남색 #303A5B) */}
           <circle
             stroke='#303A5B'
-            fill='#EBEBEB' // 원 안쪽 배경색 (이미지 참고)
+            fill='#EBEBEB'
             fillOpacity={0.5}
             strokeWidth={stroke}
             strokeDasharray={circumference + ' ' + circumference}
@@ -93,7 +136,6 @@ export default function TimerScreen() {
           />
         </svg>
 
-        {/* 중앙 시간 텍스트 */}
         <div className='absolute flex flex-col items-center justify-center'>
           <span className='font-mono text-2xl font-extrabold tracking-widest text-[#191F28]'>
             {formatTime(time)}
@@ -104,14 +146,12 @@ export default function TimerScreen() {
       {/* 하단 버튼 영역 */}
       <div className='mb-20 flex gap-4'>
         {status === 'idle' ? (
-          // 1. 초기 상태: 시작하기 버튼
           <CustomButton
             label='시작하기'
             onPress={() => setStatus('running')}
           />
         ) : (
           <>
-            {/* 2. 진행중 또는 일시정지 상태 */}
             {status === 'running' ? (
               <CustomButton
                 onPress={() => setStatus('paused')}
@@ -135,7 +175,8 @@ export default function TimerScreen() {
     </div>
   );
 }
-// 점(...)이 순서대로 움직이는 텍스트 컴포넌트
+
+// ... (RunningText, CustomButton 컴포넌트는 기존과 동일)
 export const RunningText = () => {
   const [dots, setDots] = useState('');
 
@@ -143,9 +184,9 @@ export const RunningText = () => {
     const interval = setInterval(() => {
       setDots((prev) => {
         if (prev.length < 3) return prev + '.';
-        return ''; // 3개가 되면 초기화
+        return '';
       });
-    }, 500); // 1초에 4단계 (빈값 -> . -> .. -> ...) 반복
+    }, 500);
 
     return () => clearInterval(interval);
   }, []);
