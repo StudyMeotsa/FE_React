@@ -20,23 +20,25 @@ import TodoPage from './pages/TodoPage';
 
 function App() {
   const router = createBrowserRouter([
+    // ----------------------------------------------------------------
+    // [그룹 1] 비로그인 유저만 접근 가능 (로그인, 회원가입)
+    // ✅ DefaultLayout 밖으로 분리
+    // ----------------------------------------------------------------
+    {
+      element: <PublicLayout />, // 🔒 이미 로그인했으면 못 들어옴
+      children: [
+        { path: '/login', element: <LoginPage /> },
+        { path: '/signup', element: <SignupPage /> },
+      ],
+    },
+
+    // ----------------------------------------------------------------
+    // [그룹 2] 로그인한 유저만 접근 가능 (나머지 모든 기능)
+    // ✅ DefaultLayout 유지
+    // ----------------------------------------------------------------
     {
       element: <DefaultLayout />, // 전체적인 헤더/푸터 등 스타일 레이아웃
       children: [
-        // ----------------------------------------------------------------
-        // [그룹 1] 비로그인 유저만 접근 가능 (로그인, 회원가입)
-        // ----------------------------------------------------------------
-        {
-          element: <PublicLayout />, // 🔒 이미 로그인했으면 못 들어옴
-          children: [
-            { path: '/login', element: <LoginPage /> },
-            { path: '/signup', element: <SignupPage /> },
-          ],
-        },
-
-        // ----------------------------------------------------------------
-        // [그룹 2] 로그인한 유저만 접근 가능 (나머지 모든 기능)
-        // ----------------------------------------------------------------
         {
           element: <ProtectedLayout />, // 🔒 토큰 없으면 로그인 페이지로 쫓겨남
           children: [
@@ -52,7 +54,10 @@ function App() {
               path: '/studyroom/:groupId/sessions/:sessionId/timer',
               element: <TimerScreen />,
             },
-            { path: '/studyroom/:groupId/sessions/:sessionId/todo', element: <TodoSession /> },
+            {
+              path: '/studyroom/:groupId/sessions/:sessionId/todo',
+              element: <TodoSession />,
+            },
             {
               path: '/studyroom/:groupId/sessions/:sessionId/checklists/:checklistId',
               element: <SessionDetail />,
@@ -62,6 +67,7 @@ function App() {
         },
       ],
     },
+
     // (옵션) 404 페이지 처리가 필요하면 여기에 추가
   ]);
 

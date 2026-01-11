@@ -186,7 +186,7 @@ export default function StudyRoomDetail() {
         <div>
           <TextContainer>
             {/* 찾은 room 데이터 바인딩 */}
-            <p style={{ fontSize: '22px', fontWeight: 'Bold' }}>{room.name}</p>
+            <p style={{ fontSize: '25px', fontWeight: 'Bold', textAlign: 'center' }}>{room.name}</p>
             {/* startDay를 표시하거나 기존 하드코딩 유지 */}
             <p style={{ marginLeft: '0.35rem' }}>{room.startDay}</p>
           </TextContainer>

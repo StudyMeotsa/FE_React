@@ -1,10 +1,16 @@
+import Latte from '@/assets/Latte.png';
 import SessionItem from '@/components/SessionItem';
-import { ArrowLeft, Coffee, Plus } from 'lucide-react';
+import { ArrowLeft, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Shadcn UI Components
-import { createSessionChecklist, getSessionChecklists } from '@/api/studyRooomEvent';
+import {
+  createSessionChecklist,
+  getSessionChecklists,
+  getSessionDetail,
+  type SessionDetailResponse,
+} from '@/api/studyRooomEvent';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -37,10 +43,8 @@ export default function TodoSession() {
   // --------------------------------------------------------------------------
   // [상태 관리] 세션 리스트 (기존 더미데이터를 초기값으로 설정)
   // --------------------------------------------------------------------------
-  const [sessions, setSessions] = useState<SessionData[]>([
-    { id: 1, text: '타이머 채우기', subText: '120 분', count: '10 / 12 명', completed: false },
-    { id: 2, text: '3주차 수업 내용 정리하기', count: '10 / 12 명', completed: true },
-  ]);
+  const [sessions, setSessions] = useState<SessionData[]>([]);
+  const [sessionDetail, setSessionDetail] = useState<SessionDetailResponse | null>(null);
 
   // const [coffee, setCoffee] = useState<CoffeeStatus>({
   //   level: 0,
@@ -68,6 +72,21 @@ export default function TodoSession() {
       .catch((err) => {
         console.error('불러오기 실패:', err);
       });
+  }, [groupId, sessionId]);
+
+  useEffect(() => {
+    if (!groupId || !sessionId) return;
+
+    const fetchDetail = async () => {
+      try {
+        const data = await getSessionDetail(Number(groupId), Number(sessionId));
+        setSessionDetail(data); // 받아온 데이터 상태 저장
+      } catch (error) {
+        console.error('세션 상세 정보 조회 에러:', error);
+      }
+    };
+
+    fetchDetail();
   }, [groupId, sessionId]);
 
   // 모달 및 입력값 상태
@@ -148,7 +167,9 @@ export default function TodoSession() {
           {/* 타이틀 및 날짜 */}
           <div className='flex flex-col items-center'>
             <h1 className='text-xl font-bold text-[#191F28]'>세션 할 일</h1>
-            <span className='mt-1 text-xs text-gray-500'>8월 19일 ~ 8월 21일</span>
+            <span className='mt-1 text-xs text-gray-500'>
+              {sessionDetail?.startTime} ~ {sessionDetail?.endTime}
+            </span>
           </div>
         </div>
       </header>
@@ -158,10 +179,7 @@ export default function TodoSession() {
         {/* 커피 아이콘 및 진행바 영역 */}
         <div className='mt-4 mb-8 flex w-full flex-col items-center'>
           <div className='mb-6'>
-            <Coffee
-              size={80}
-              className='text-[#6F4E37]'
-            />
+            <img src={Latte} />
           </div>
 
           <div className='w-full max-w-[280px]'>
@@ -177,8 +195,6 @@ export default function TodoSession() {
               <span>80</span>
             </div>
           </div>
-
-          <div className='mt-2 text-lg font-bold text-[#6F4E37]'>☕ 80알</div>
         </div>
 
         {/* 2) 리스트 영역 (State인 sessions를 렌더링) */}
