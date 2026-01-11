@@ -1,6 +1,7 @@
 import { type Studyroom } from '@/api/studyrooms';
 import { createSession } from '@/api/studyRooomEvent';
 import { Button } from '@/components/ui/button';
+import { Calendar, Coffee } from 'lucide-react'; // 아이콘 추가
 import { Link } from 'react-router-dom';
 import * as S from './CardStyled';
 
@@ -9,18 +10,16 @@ type Props = {
 };
 
 export default function Card({ room }: Props) {
-  // 진도율 계산 로직: (현재 세션 순서 / 전체 세션 수) * 100
+  // 진도율 계산 로직 (유지)
   const progressPercentage =
     room.totalSessions > 0
       ? Math.min(Math.round((room.sessionOrder / room.totalSessions) * 100), 100)
       : 0;
 
-  // 세션 생성 핸들러
+  // 세션 생성 핸들러 (유지)
   const handleCreateSession = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // 부모 Link로의 클릭 이벤트 전파 방지
-
+    e.preventDefault();
     try {
-      // 다음 회차(sessionOrder + 1) 생성을 시도한다고 가정
       await createSession(room.groupId, {
         sessionOrder: room.sessionOrder + 1,
         title: room.name,
@@ -34,62 +33,111 @@ export default function Card({ room }: Props) {
     }
   };
 
+  // 날짜 포맷팅 (YYYY-MM-DD -> YY.MM.DD)
+  const formatDate = (dateStr: string) => {
+    if (!dateStr) return '';
+    return dateStr.slice(2).replace(/-/g, '.');
+  };
+
   return (
     <Link
       to={`/studyroomdetail/${room.groupId}`}
       style={{ textDecoration: 'none' }}>
       <S.Container>
-        <S.Top>
+        {/* 상단 헤더: 제목 + 배지 */}
+        <S.Header>
           <S.Title>{room.name}</S.Title>
-          <S.Button>{Math.ceil(room.totalSessions / room.weekSession)}주 플랜</S.Button>
-        </S.Top>
+          <S.Badge>{Math.ceil(room.totalSessions / room.weekSession)}주 플랜</S.Badge>
+        </S.Header>
 
-        <S.Content>
-          <S.ContentText>
-            <span className='font-bold'>주간 세션:</span> {room.weekSession}회 / 총{' '}
-            {room.totalSessions}회
-          </S.ContentText>
-          <S.ContentText>
-            <span className='font-bold'>세션 최소 공부량:</span> {room.studyTimeAim}분
-          </S.ContentText>
-          <S.ContentText>
-            <span className='font-bold'>스터디 인원:</span> {room.currentMember}명 /{' '}
-            {room.maxMember}명
-          </S.ContentText>
-          <S.ContentText>
-            <span className='font-bold'>현재 세션:</span> {room.sessionOrder}회차
-          </S.ContentText>
-        </S.Content>
+        {/* 내부 아이보리색 박스 */}
+        <S.InnerCard>
+          <S.InfoList>
+            {/* 날짜 정보 */}
+            <S.InfoItem>
+              <Calendar
+                size={16}
+                strokeWidth={2.5}
+              />
+              <span>
+                {formatDate(room.startDay)} ~ {formatDate(room.endDay)}
+              </span>
+            </S.InfoItem>
 
-        {/* 백엔드 API에서 제공하는 coffeeImagePath 사용 */}
-        <S.Image
-          src={room.coffeeImagePath}
-          alt={room.name}
-          onError={(e) => {
-            // 이미지 로드 실패 시 대체 이미지 처리 (필요시)
-            (e.currentTarget as HTMLImageElement).src = '/images/default-coffee.png';
-          }}
-        />
+            {/* 주간 세션 */}
+            <S.InfoItem>
+              <Coffee
+                size={16}
+                strokeWidth={3}
+              />{' '}
+              {/* 원두 아이콘 대신 커피 아이콘 사용 */}
+              <span>
+                주간 세션: {room.weekSession}회, 총 {room.totalSessions}회
+              </span>
+            </S.InfoItem>
 
+            {/* 최소 공부량 */}
+            <S.InfoItem>
+              <Coffee
+                size={16}
+                strokeWidth={3}
+              />
+              <span>세션 최소 공부량: {room.studyTimeAim}h</span>
+            </S.InfoItem>
+
+            {/* 스터디 인원 */}
+            <S.InfoItem>
+              <Coffee
+                size={16}
+                strokeWidth={3}
+              />
+              <span>
+                스터디 인원: {room.currentMember} / {room.maxMember}명
+              </span>
+            </S.InfoItem>
+
+            {/* 현재 세션 */}
+            <S.InfoItem>
+              <Coffee
+                size={16}
+                strokeWidth={3}
+              />
+              <span>현재 세션: {room.sessionOrder}회차</span>
+            </S.InfoItem>
+          </S.InfoList>
+        </S.InnerCard>
+
+        {/* 커피 이미지 (InnerCard와 겹치게 배치) */}
+        <S.ImageWrapper>
+          <img
+            src={room.coffeeImagePath}
+            alt={room.name}
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src = '/images/default-coffee.png';
+            }}
+          />
+        </S.ImageWrapper>
+
+        {/* 하단 프로그레스 바 */}
         <S.ProgressContainer>
-          <S.ProgressText>Progress</S.ProgressText>
+          <S.ProgressHeader>
+            <span className='label'>Progress</span>
+            <span className='value'>{progressPercentage}%</span>
+          </S.ProgressHeader>
 
           <S.ProgressTrack>
-            {/* 계산된 퍼센트를 스타일드 컴포넌트에 prop으로 전달 */}
             <S.ProgressFill $width={progressPercentage} />
           </S.ProgressTrack>
 
-          <S.ProgressText style={{ alignSelf: 'flex-end', marginRight: '45px' }}>
-            {progressPercentage}%
-          </S.ProgressText>
-
-          {/* sessionOrder가 0이거나 데이터가 없는 특수 상황에서만 생성 버튼 노출 */}
+          {/* 세션 생성 버튼 (특수 조건) */}
           {!room.sessionOrder && (
-            <Button
-              onClick={handleCreateSession}
-              className='mt-2 bg-[#ac7349] text-white hover:bg-[#8d5d3a]'>
-              세션 생성 (한번만 누르시오)
-            </Button>
+            <div style={{ position: 'absolute', bottom: '50px', right: '20px', zIndex: 10 }}>
+              <Button
+                onClick={handleCreateSession}
+                className='h-8 bg-[#2C2C2C] text-xs text-white hover:bg-black'>
+                세션 생성
+              </Button>
+            </div>
           )}
         </S.ProgressContainer>
       </S.Container>
