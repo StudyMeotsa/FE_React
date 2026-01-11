@@ -19,6 +19,7 @@ export const getSessionDetail = async (
     const { data } = await axiosInstance.get<SessionDetailResponse>(
       `/studyrooms/${groupId}/sessions/${sessionId}`
     );
+    console.log('세션 상세 정보', data);
     return data;
   } catch (error) {
     console.error('세션 상세 정보 조회 실패:', error);
