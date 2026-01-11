@@ -220,7 +220,7 @@ export default function StudyRoomDetail() {
         </button>
         <button
           className='study'
-          onClick={() => navigate('/timer')}>
+          onClick={() => navigate(`/studyroom/${groupId}/sessions/${room.sessionId}/timer`)}>
           공부하기
         </button>
       </div>

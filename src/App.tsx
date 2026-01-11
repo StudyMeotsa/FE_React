@@ -48,7 +48,10 @@ function App() {
             { path: '/studyroomdetail/:groupId', element: <StudyRoomDetail /> },
             { path: '/studyroomInfo/:groupId', element: <StudyRoomInfo /> },
             { path: '/enter', element: <EnterPage /> },
-            { path: '/timer', element: <TimerScreen /> },
+            {
+              path: '/studyroom/:groupId/sessions/:sessionId/timer',
+              element: <TimerScreen />,
+            },
             { path: '/studyroom/:groupId/sessions/:sessionId/todo', element: <TodoSession /> },
             { path: '/session/:id', element: <SessionDetail /> },
             { path: '/TodoPage', element: <TodoPage /> },
