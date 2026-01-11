@@ -53,7 +53,10 @@ function App() {
               element: <TimerScreen />,
             },
             { path: '/studyroom/:groupId/sessions/:sessionId/todo', element: <TodoSession /> },
-            { path: '/session/:id', element: <SessionDetail /> },
+            {
+              path: '/studyroom/:groupId/sessions/:sessionId/checklists/:checklistId',
+              element: <SessionDetail />,
+            },
             { path: '/TodoPage', element: <TodoPage /> },
           ],
         },
