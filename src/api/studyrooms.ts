@@ -24,11 +24,8 @@ export const studyroomCreate = async (
 
     console.log('스터디룸 생성 성공(code):', code.data);
     return code.data;
-  } catch (error: any) {
-    throw {
-      status: error?.response?.status,
-      message: error?.response?.data?.message ?? error.message,
-    };
+  } catch (error) {
+    console.error(error);
   }
 };
 /*=========================================================================================*/

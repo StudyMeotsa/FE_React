@@ -1,9 +1,8 @@
-import styled from 'styled-components';
-import CustomButton from '@/components/ui/CustomButton';
 import { EnterCode } from '@/api/studyrooms';
-import { useNavigate } from 'react-router';
+import CustomButton from '@/components/ui/CustomButton';
 import { useState } from 'react';
-
+import { useNavigate } from 'react-router';
+import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;
@@ -35,22 +34,17 @@ export default function EnterPage() {
   const navigate = useNavigate();
   const [code, setCode] = useState('');
 
-  const enter = async() => {
-    try{
+  const enter = async () => {
+    try {
       const result = await EnterCode(code);
 
-      if (result?.success){
+      if (result?.success) {
         alert('입장 성공!');
         navigate('/studyroom');
         return;
       }
       alert(result?.message ?? '입장 실패');
-    } catch (error: any) {
-      const msg =
-        error?.response?.data?.message ??
-        error?.message ??
-        '입장실패';
-      alert(msg);
+    } catch (error) {
       console.log(error);
     }
   };

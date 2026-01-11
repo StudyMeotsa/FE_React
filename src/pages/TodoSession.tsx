@@ -1,9 +1,10 @@
 import SessionItem from '@/components/SessionItem';
 import { ArrowLeft, Coffee, Plus } from 'lucide-react';
-import { useState, useEffect, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Shadcn UI Components
+import { createSessionChecklist, getSessionChecklists } from '@/api/studyRooomEvent';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -15,9 +16,6 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { studyroomList } from '@/api/studyrooms';
-import { getSessionChecklists } from '@/api/studyRooomEvent';
-import { createSessionChecklist } from '@/api/studyRooomEvent';
 
 // 세션 아이템 타입 정의
 interface SessionData {
@@ -26,11 +24,6 @@ interface SessionData {
   subText?: string;
   count: string;
   completed: boolean;
-}
-interface CoffeeStatus {
-  level: number;
-  requiredPerLevel: number;
-  current: number;
 }
 
 export default function TodoSession() {
@@ -60,10 +53,9 @@ export default function TodoSession() {
     getSessionChecklists(Number(groupId), Number(sessionId))
       .then((res) => {
         console.log('API 응답 데이터:', res.checklists);
-        const newList = res.checklists.map((item: any) => ({
+        const newList = res.checklists.map((item) => ({
           id: item.checklistId,
           text: item.title, // 제목
-          subText: item.description,
           count: `${item.doneMember} / ${item.maxMember} 명`,
           completed: item.mySubmission, // 완료 여부
         }));
@@ -82,7 +74,6 @@ export default function TodoSession() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [newTitle, setNewTitle] = useState('');
   const [newDesc, setNewDesc] = useState(''); // 설명은 상세페이지에서 쓸 수 있지만, 리스트엔 제목만 표시
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // --------------------------------------------------------------------------
   // [계산] 진행률 및 커피 계산
@@ -111,8 +102,6 @@ export default function TodoSession() {
     }
 
     try {
-      setIsSubmitting(true);
-
       // ✅ request body: { title, description }
       const res = await createSessionChecklist(gid, sid, {
         title: newTitle,
@@ -141,8 +130,6 @@ export default function TodoSession() {
     } catch (error) {
       console.error(error);
       alert('세션 할 일 생성 중 오류가 발생했습니다.');
-    } finally {
-      setIsSubmitting(false);
     }
   };
 

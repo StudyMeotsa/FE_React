@@ -1,40 +1,10 @@
 import { useNavigate } from 'react-router';
-import axios from 'axios';
-import { axiosInstance } from '@/api/axiosinstance';
-import { getHomeData } from '@/api/homepage';
-import { useState, useEffect } from 'react';
 
 import Lamp from '../assets/lamp.png';
 import Man from '../assets/man.png';
-import Woman from '../assets/woman.svg';
 import './HomePage.css';
 
 export default function HomePage() {
-  const [homeData, setHomeData] = useState({
-    name: '',
-    sex: '',
-  });
-
-  useEffect(() => {
-    const fetchHomeData = async () => {
-      try {
-        const [meResponse, studyroomResponse] = await Promise.all([
-          getHomeData(),
-          // axiosInstance.get('/api/studyrooms'),
-        ]);
-        setHomeData({
-          name: meResponse.name,
-          sex: meResponse.sex,
-          // 추가로 필요한 데이터 여기에 추가하고 homedata에 올려두기(2군데)
-        });
-      } catch (error) {
-        console.error('Data Error:', error);
-      }
-    };
-
-    fetchHomeData();
-  }, []);
-
   const navigate = useNavigate();
   const handleClick = () => {
     navigate('/studyroom');
@@ -49,7 +19,7 @@ export default function HomePage() {
             className='lampImage'
           />
           <div className='intro_text'>
-            <p className='intro_1'>{homeData.name}님,</p>
+            <p className='intro_1'>님,</p>
             <p className='intro_1'>안녕하세요!</p>
             <p className='intro_2'>바로 시작해볼까요?</p>
           </div>
@@ -61,7 +31,7 @@ export default function HomePage() {
           </button>
         </div>
         <img
-          src={homeData.sex === 'M' ? Man : Woman}
+          src={Man}
           className='manImage'
           alt='Character'
         />

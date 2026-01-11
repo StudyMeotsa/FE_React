@@ -1,9 +1,9 @@
-import * as S from '../components/StudyRoom/Create/BasicStyled';
+import { studyroomCreate } from '@/api/studyrooms';
 import Input from '@/components/StudyRoom/Create/Input';
 import CustomButton from '@/components/ui/CustomButton';
-import { studyroomCreate } from '@/api/studyrooms';
-import { useNavigate } from 'react-router';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
+import * as S from '../components/StudyRoom/Create/BasicStyled';
 
 export default function StudyRoomCreate() {
   const navigate = useNavigate();
@@ -30,12 +30,7 @@ export default function StudyRoomCreate() {
 
       alert('스터디룸이 생성되었습니다.');
       navigate('/studyroom');
-    } catch (e: any) {
-      if (e.status === 409) {
-        alert('이미 존재하는 스터디룸명입니다.');
-        return;
-      }
-      alert('스터디룸 생성 실패');
+    } catch (e) {
       console.error(e);
     }
   };
