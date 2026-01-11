@@ -39,6 +39,11 @@ export default function LoginPage() {
     }
   };
 
+  const clearAuthTokens = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+  };
+
   return (
     <div className='flex min-h-screen w-full justify-center bg-[#FDFBF7]'>
       {/* 모바일 뷰포트 제한 (데스크탑에서도 앱처럼 보이게) */}
@@ -63,7 +68,16 @@ export default function LoginPage() {
             <h2 className='font-serif text-3xl leading-tight font-medium'>
               몰입을 위한
               <br />
-              <span className='font-bold text-white'>가장 완벽한 공간</span>
+              <span
+                className='cursor-pointer font-bold text-white'
+                onClick={clearAuthTokens}
+                role='button'
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') clearAuthTokens();
+                }}>
+                가장 완벽한 공간
+              </span>
             </h2>
           </div>
         </div>
