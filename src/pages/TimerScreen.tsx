@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { ArrowLeft } from 'lucide-react'; // lucide-react 아이콘 사용 (없으면 생략 가능)
 import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react'; // lucide-react 아이콘 사용 (없으면 생략 가능)
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 type TimerStatus = 'idle' | 'running' | 'paused';

@@ -1,15 +1,16 @@
-import { useNavigate } from 'react-router';
-import back from '../assets/back.svg';
-import * as S from '@/components/Todo/TodoStyle';
 import Latte from '@/assets/Latte.png';
 import ProgressBar from '@/components/Todo/ProgressBar';
 import ToDoItem from '@/components/Todo/TodoItem';
+import * as S from '@/components/Todo/TodoStyle';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
+import back from '../assets/back.svg';
 
 export default function TodoPage() {
   const navigate = useNavigate();
   const backButtonClick = () => {
     navigate('/studyroom');
+    setItems([{ label: '3주차 수업 내용 정리하기', done: true }]);
   };
 
   const [items, setItems] = useState([

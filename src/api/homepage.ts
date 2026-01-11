@@ -1,8 +1,7 @@
 import { axiosInstance } from '@/api/axiosinstance';
-import axios from 'axios';
 
 /* homepage 성별 */
-export const getHomeData = async (): Promise<any> => {
+export const getHomeData = async () => {
   try {
     const response = await axiosInstance.get('/auth/me');
     return response.data;

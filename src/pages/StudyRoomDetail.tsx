@@ -1,10 +1,12 @@
-import { studyroomList, type Studyroom } from '@/api/studyrooms'; // API 변경
+import { studyroomList, type Studyroom } from '@/api/studyrooms';
+import { getStamps, type StampResponse } from '@/api/studyRoomSubEvent';
 import back from '@/assets/back.svg';
+import coffeeEmpty from '@/assets/coffee-cup-empty.png';
+import coffeeFilled from '@/assets/coffee-cup-fulled.png';
 import info from '@/assets/info.svg';
 import sample1 from '@/assets/sample1.svg';
 import sample2 from '@/assets/sample2.svg';
 import sample3 from '@/assets/sample3.svg';
-import stamp from '@/assets/stamp.svg';
 import WaveHeader from '@/components/WaveHeader';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -40,6 +42,29 @@ const SquareModalBox = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
+`;
+const StampBoard = styled.div`
+  background-color: white;
+  width: 90%;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 15px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* 가운데 정렬 */
+  align-items: center;
+  gap: 15px; /* 아이콘 간 간격 */
+`;
+const Dots = styled.div`
+  font-size: 30px;
+  font-weight: bold;
+  color: #ccc;
+  margin-top: 10px;
+`;
+
+const StampIcon = styled.img`
+  width: 50px; /* 컵 사이즈 조절 */
+  height: auto;
 `;
 
 const CloseButton = styled.button`
@@ -88,6 +113,7 @@ function NoticeItem({ noticetitle, noticecontent }: NoticeItemProps) {
 export default function StudyRoomDetail() {
   const navigate = useNavigate();
   const { groupId } = useParams<{ groupId: string }>(); // URL에서 groupId 추출
+  const [stamps, setStamps] = useState<StampResponse>();
 
   // 상태 타입을 Studyroom | null 로 변경
   const [room, setRoom] = useState<Studyroom | null>(null);
@@ -133,8 +159,14 @@ export default function StudyRoomDetail() {
   };
 
   const [isStampModalOpen, setIsStampModalOpen] = useState(false);
-  const openStampModalOpen = () => {
-    setIsStampModalOpen(true);
+  const openStampModalOpen = async () => {
+    try {
+      setIsStampModalOpen(true);
+      const data = await getStamps(Number(groupId));
+      if (data) setStamps(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
   const closeStampModal = () => {
     setIsStampModalOpen(false);
@@ -196,7 +228,7 @@ export default function StudyRoomDetail() {
       {/* Studyroom 타입에 description이 없으므로 임시 텍스트 처리 */}
       <NoticeItem
         noticetitle='공지사항'
-        noticecontent={`현재 ${room.sessionId}회차 진행 중입니다. (목표: 총 ${room.totalSessions}회)`}
+        noticecontent={`현재 1회차 진행 중입니다. (목표: 총 ${room.totalSessions}회)`}
       />
 
       <div className='tablecontainers'>
@@ -217,25 +249,41 @@ export default function StudyRoomDetail() {
         />
       </div>
 
-      {isStampModalOpen && (
+      {isStampModalOpen && stamps && (
         <ModalOverlay onClick={closeStampModal}>
           <SquareModalBox onClick={(e) => e.stopPropagation()}>
-            <h1
+            <div
               style={{
-                color: 'white',
-                fontSize: '25px',
-                margin: '20px 0 0 0',
-                textAlign: 'left',
-                width: '80%',
+                display: 'flex',
+                justifyContent: 'space-between',
+                width: '90%',
+                marginTop: '20px',
+                alignItems: 'center',
               }}>
-              스터디 진행 현황
-            </h1>
-            <img
-              className='stamp'
-              src={stamp}
-              alt='stamp'
-              style={{ width: '380px', height: '210px' }}
-            />
+              <h1 style={{ color: 'white', fontSize: '22px', margin: 0 }}>스터디 진행 현황</h1>
+              {/* 우측 상단 횟수 표시 (참고 이미지 스타일) */}
+              <span style={{ color: 'white', fontSize: '18px', opacity: 0.8 }}>
+                {stamps.completedSessions} / {stamps.totalSessions}회
+              </span>
+            </div>
+
+            <StampBoard>
+              {/* 스탬프 렌더링 로직: 최대 10개까지만 loop */}
+              {Array.from({ length: Math.min(stamps.totalSessions, 10) }).map((_, index) => {
+                // 현재 인덱스가 완료된 횟수보다 작으면 채워진 컵, 아니면 빈 컵
+                const isCompleted = index < stamps.completedSessions;
+                return (
+                  <StampIcon
+                    key={index}
+                    src={isCompleted ? coffeeFilled : coffeeEmpty}
+                    alt={isCompleted ? 'completed' : 'empty'}
+                  />
+                );
+              })}
+
+              {/* 10개가 넘어가면 점(...) 표시 */}
+              {stamps.totalSessions > 10 && <Dots>...</Dots>}
+            </StampBoard>
 
             <CloseButton onClick={closeStampModal}>확인</CloseButton>
           </SquareModalBox>

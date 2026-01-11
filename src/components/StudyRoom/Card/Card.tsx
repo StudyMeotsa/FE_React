@@ -10,9 +10,10 @@ type Props = {
 
 export default function Card({ room }: Props) {
   // 진도율 계산 로직: (현재 세션 순서 / 전체 세션 수) * 100
-  const progressPercentage = room.totalSessions > 0 
-    ? Math.min(Math.round((room.sessionOrder / room.totalSessions) * 100), 100) 
-    : 0;
+  const progressPercentage =
+    room.totalSessions > 0
+      ? Math.min(Math.round((room.sessionOrder / room.totalSessions) * 100), 100)
+      : 0;
 
   // 세션 생성 핸들러
   const handleCreateSession = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -34,7 +35,9 @@ export default function Card({ room }: Props) {
   };
 
   return (
-    <Link to={`/studyroomdetail/${room.groupId}`} style={{ textDecoration: 'none' }}>
+    <Link
+      to={`/studyroomdetail/${room.groupId}`}
+      style={{ textDecoration: 'none' }}>
       <S.Container>
         <S.Top>
           <S.Title>{room.name}</S.Title>
@@ -43,13 +46,15 @@ export default function Card({ room }: Props) {
 
         <S.Content>
           <S.ContentText>
-            <span className='font-bold'>주간 세션:</span> {room.weekSession}회 / 총 {room.totalSessions}회
+            <span className='font-bold'>주간 세션:</span> {room.weekSession}회 / 총{' '}
+            {room.totalSessions}회
           </S.ContentText>
           <S.ContentText>
             <span className='font-bold'>세션 최소 공부량:</span> {room.studyTimeAim}분
           </S.ContentText>
           <S.ContentText>
-            <span className='font-bold'>스터디 인원:</span> {room.currentMember}명 / {room.maxMember}명
+            <span className='font-bold'>스터디 인원:</span> {room.currentMember}명 /{' '}
+            {room.maxMember}명
           </S.ContentText>
           <S.ContentText>
             <span className='font-bold'>현재 세션:</span> {room.sessionOrder}회차
@@ -68,22 +73,21 @@ export default function Card({ room }: Props) {
 
         <S.ProgressContainer>
           <S.ProgressText>Progress</S.ProgressText>
-          
+
           <S.ProgressTrack>
             {/* 계산된 퍼센트를 스타일드 컴포넌트에 prop으로 전달 */}
             <S.ProgressFill $width={progressPercentage} />
           </S.ProgressTrack>
-          
+
           <S.ProgressText style={{ alignSelf: 'flex-end', marginRight: '45px' }}>
             {progressPercentage}%
           </S.ProgressText>
 
           {/* sessionOrder가 0이거나 데이터가 없는 특수 상황에서만 생성 버튼 노출 */}
           {!room.sessionOrder && (
-            <Button 
-              onClick={handleCreateSession} 
-              className="mt-2 bg-[#ac7349] hover:bg-[#8d5d3a] text-white"
-            >
+            <Button
+              onClick={handleCreateSession}
+              className='mt-2 bg-[#ac7349] text-white hover:bg-[#8d5d3a]'>
               세션 생성 (한번만 누르시오)
             </Button>
           )}

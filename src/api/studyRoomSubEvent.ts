@@ -59,13 +59,16 @@ export type StampSession = {
 // 2-2. 스탬프 전체 조회 응답 타입
 export type StampResponse = {
   totalSessions: number;
-  sessions: StampSession[];
+  completedSessions: number;
 };
 
 // [API] 스탬프 목록 조회
 export const getStamps = async (groupId: number): Promise<StampResponse> => {
   try {
-    const { data } = await axiosInstance.get<StampResponse>(`/studyrooms/${groupId}/stamp`);
+    const { data } = await axiosInstance.get<StampResponse>(
+      `/studyrooms/${groupId}/sessions/progress`
+    );
+    console.log(data);
     return data;
   } catch (error) {
     console.error('스탬프 조회 실패:', error);

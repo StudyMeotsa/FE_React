@@ -77,7 +77,7 @@ export type CoffeeInfo = {
 
 export type ChecklistItem = {
   checklistId: number;
-  content: string;
+  title: string;
   doneMember: number;
   maxMember: number;
   mySubmission: boolean;
@@ -129,7 +129,7 @@ export const createSessionChecklist = async (
       `/studyrooms/${groupId}/sessions/${sessionId}/checklists`,
       body
     );
-    console.log('체크리스트가 생성되었습니다.')
+    console.log('체크리스트가 생성되었습니다.');
     return data;
   } catch (error) {
     console.error('세션 할 일 생성 실패:', error);
